@@ -1,0 +1,17 @@
+## Title: Aye.Warnings
+## Notes: Warnings
+## Depot: Aye
+## LoadOnDemand: 1
+## Author: Benio
+## Version: 1
+## Interface: 70000
+
+#utils
+utils/Buffs.lua
+utils/Chat.lua
+utils/Player.lua
+
+#files
+Aye.Warnings.lua
+Aye.Warnings.options.lua
+Aye.Warnings.options.default.lua
