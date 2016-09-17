@@ -57,6 +57,22 @@ Aye.options.args.Warnings = {
 				or	Aye.db.global.Warnings.enablePull
 			end,
 		},
+		execute7 = {
+			order = 7,
+			type = "execute",
+			name = "Default module settings",
+			desc = "Reset settings of this module to default.\n\n|cff9d9d9dIf you wish to reset settings of all Aye modules instead, "
+				.. "use \"Defaults\" options from left bottom corner of \"Interface\" window, then select \"These Settings\".|r"
+			,
+			func = function()
+				Aye.db.global.Warnings = CopyTable(Aye.default.global.Warnings);
+				Aye.libs.ConfigRegistry:NotifyChange("Aye");
+			end,
+			hidden = function() return
+					not Aye.db.global.Warnings.enableReadyCheck
+				and	not Aye.db.global.Warnings.enablePull
+			end,
+		},
 		header11 = {
 			order = 11,
 			type = "header",
