@@ -17,9 +17,7 @@ Aye.utils.Buffs = Aye.utils.Buffs or {};
 Aye.utils.Buffs.UnitHasRune = Aye.utils.Buffs.UnitHasRune or function(unitID)
 	-- Rune
 	for _, buffID in pairs({
-		175457, -- 50 int
-		175456, -- 50 agi
-		175439, -- 50 str
+		224001, -- 325 primary stats
 	}) do
 		local _, _, _, _, _, _, expires = UnitBuff(unitID, GetSpellInfo(buffID));
 		
@@ -55,12 +53,12 @@ end;
 --| if buff == 1	then print("player have BiS flask, time left: " ..note .."min") end;
 --| if buff == 2	then print("player have old flask: " ..note) end;
 Aye.utils.Buffs.UnitHasFlask = Aye.utils.Buffs.UnitHasFlask or function(unitID)
-	-- BiS Flask: 250
+	-- BiS Flask: 1300
 	for _, buffID in pairs({
-		156079, -- 250 int, Greater Draenic Intellect Flask
-		156064, -- 250 agi, Greater Draenic Agility Flask
-		156080, -- 250 str, Greater Draenic Strength Flask
-		156084, -- 250 sta, Greater Draenic Stamina Flask
+		188031, -- 1300 int, Flask of the Whispered Pact
+		188033, -- 1300 agi, Flask of the Seventh Demon
+		188034, -- 1300 str, Flask of the Countless Armies
+		188035, -- 1950 sta, Flask of Ten Thousand Scars
 	}) do
 		local _, _, _, _, _, _, expires = UnitBuff(unitID, GetSpellInfo(buffID));
 		
@@ -69,12 +67,18 @@ Aye.utils.Buffs.UnitHasFlask = Aye.utils.Buffs.UnitHasFlask or function(unitID)
 		end;
 	end;
 	
-	-- Not BiS Flask: 200
+	-- WoD
+	-- Not BiS Flask: 250
 	for _, buffID in pairs({
+		156079, -- 250 int, Greater Draenic Intellect Flask
+		156064, -- 250 agi, Greater Draenic Agility Flask
+		156080, -- 250 str, Greater Draenic Strength Flask
+		156084, -- 375 sta, Greater Draenic Stamina Flask
+		
 		156070, -- 200 int, Draenic Intellect Flask
 		156073, -- 200 agi, Draenic Agility Flask
 		156071, -- 200 str, Draenic Strength Flask
-		156077, -- 200 sta, Draenic Stamina Flask
+		156077, -- 300 sta, Draenic Stamina Flask
 	}) do
 		local _, _, _, _, _, _, expires = UnitBuff(unitID, GetSpellInfo(buffID));
 		
@@ -90,7 +94,7 @@ end;
 -- Check if @unitID is Well Fed
 --
 -- @param		{uint}		unitID	@unitID should be visible (UnitIsVisible)
--- @return		{0|1|2|3}	buff	extended buff status:
+-- @return		{0|1|2|3|4}	buff	extended buff status:
 --
 -- +------+----------+-----+--------+
 -- | buff | Well Fed | BiS | Eating |
@@ -121,17 +125,37 @@ Aye.utils.Buffs.UnitIsWellFed = Aye.utils.Buffs.UnitIsWellFed or function(unitID
 	
 	-- Well Fed
 	for _, buffID in pairs({
-		180750, -- 125 mast
-		180748, -- 125 hast
-		180745, -- 125 crit
-		180749, -- 125 mult
-		180746, -- 125 vers
-		180747, -- 125 stam
-		188534, -- fel lash
+		225604, -- 375 mastery
+		225603, -- 375 haste
+		225602, -- 375 crit
+		225605, -- 375 versatility
+		225606, -- 2831.(6) +haste dps
 	}) do
 		if type(spellID) =="number" and buffID == spellID then
 			return 1, floor(.5+ (expires -GetTime()) /60);
 		end;
+	end;
+	
+	-- Tier 2 Food
+	for _, buffID in pairs({
+		225599, -- 300 mastery
+		225598, -- 300 haste
+		225597, -- 300 crit
+		225600, -- 300 versatility
+		225601, -- 2265.(3) +haste dps
+	}) do
+		return 2, "T2";
+	end;
+	
+	-- Tier 1 Food
+	for _, buffID in pairs({
+		201331, -- 225 mastery
+		201329, -- 225 haste
+		201213, -- 225 crit
+		201333, -- 225 versatility
+		201336, -- 1699 +haste dps
+	}) do
+		return 2, "T1";
 	end;
 	
 	-- Eating
