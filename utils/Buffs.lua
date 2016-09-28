@@ -144,7 +144,9 @@ Aye.utils.Buffs.UnitIsWellFed = Aye.utils.Buffs.UnitIsWellFed or function(unitID
 		225600, -- 300 versatility
 		225601, -- 2265.(3) +haste dps
 	}) do
-		return 2, "T2";
+		if type(spellID) =="number" and buffID == spellID then
+			return 2, "T2";
+		end;
 	end;
 	
 	-- Tier 1 Food
@@ -155,7 +157,9 @@ Aye.utils.Buffs.UnitIsWellFed = Aye.utils.Buffs.UnitIsWellFed or function(unitID
 		201333, -- 225 versatility
 		201336, -- 1699 +haste dps
 	}) do
-		return 2, "T1";
+		if type(spellID) =="number" and buffID == spellID then
+			return 2, "T1";
+		end;
 	end;
 	
 	-- Eating
