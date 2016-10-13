@@ -274,6 +274,7 @@ Aye.modules.Warnings.warn = function()
 			for k, v in pairs({
 				-- ["c"]ondition setting
 				-- ["f"]unction to check condition
+				-- ["2"]nd function argument
 				-- ["t"]able to insert players
 				{
 					["c"] =
@@ -283,6 +284,7 @@ Aye.modules.Warnings.warn = function()
 							)
 						and	Aye.db.global.Warnings.Flask,
 					["f"] = Aye.utils.Buffs.UnitHasFlask,
+					["2"] = nil,
 					["t"] = t.Flask.t
 				},
 				{
@@ -293,6 +295,7 @@ Aye.modules.Warnings.warn = function()
 							)
 						and	Aye.db.global.Warnings.Rune,
 					["f"] = Aye.utils.Buffs.UnitHasRune,
+					["2"] = nil,
 					["t"] = t.Rune.t
 				},
 				{
@@ -303,6 +306,7 @@ Aye.modules.Warnings.warn = function()
 							)
 						and	Aye.db.global.Warnings.WellFed,
 					["f"] = Aye.utils.Buffs.UnitIsWellFed,
+					["2"] = Aye.db.global.Warnings.WellFedTier,
 					["t"] = t.WellFed.t
 				},
 			}) do
@@ -324,7 +328,7 @@ Aye.modules.Warnings.warn = function()
 					--	{buff = 3, note = "E"}	-- buff is not ready, but unit is "E"ating, display "E" as note, ex:
 					--
 					-- WARNING! Not Well Fed (1): Foo (E)
-					local buff, note = v.f(unitID);
+					local buff, note = v.f(unitID, v["2"]);
 					
 					-- No buff and not eating
 					if buff == 0 then

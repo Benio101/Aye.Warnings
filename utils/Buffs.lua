@@ -93,8 +93,9 @@ end;
 
 -- Check if @unitID is Well Fed
 --
--- @param		{uint}		unitID	@unitID should be visible (UnitIsVisible)
--- @return		{0|1|2|3|4}	buff	extended buff status:
+-- @param		{uint}		unitID			@unitID should be visible (UnitIsVisible)
+-- @param		{uint}		requiredTier	minimum required Tier of buff (default 3)
+-- @return		{0|1|2|3|4}	buff			extended buff status:
 --
 -- +------+----------+-----+--------+
 -- | buff | Well Fed | BiS | Eating |
@@ -117,7 +118,9 @@ end;
 --| if buff == 1	then print("player is Well Fed, time left: " ..note .."min") end;	-- BiS "Well Fed" buff, note contains buff time left
 --| if buff == 2	then print("player is Poor Fed: " ..note) end;						-- "Well Fed" buff is not BiS, aka "Poor Fed", note is buff value2 or link to "Well Fed" buff
 --| if buff == 3	then print("player is eating.") end;								-- No "Well Fed" buff, but @unitID is eating, note is "E"
-Aye.utils.Buffs.UnitIsWellFed = Aye.utils.Buffs.UnitIsWellFed or function(unitID)
+Aye.utils.Buffs.UnitIsWellFed = Aye.utils.Buffs.UnitIsWellFed or function(unitID, requiredTier)
+	requiredTier = requiredTier == nil and 3 or requiredTier;
+	
 	-- expires	= time at which the aura will expire
 	-- spellID	= spellID of the aura, used to identify Well Fed buff
 	-- value2	= how much stat is applied on buff, ex. 125 for +125 mastery
@@ -145,7 +148,11 @@ Aye.utils.Buffs.UnitIsWellFed = Aye.utils.Buffs.UnitIsWellFed or function(unitID
 		225601, -- 2265.(3) +haste dps
 	}) do
 		if type(spellID) =="number" and buffID == spellID then
-			return 2, "T2";
+			if requiredTier <=2 then
+				return 1, floor(.5+ (expires -GetTime()) /60);
+			else
+				return 2, "T2";
+			end;
 		end;
 	end;
 	
@@ -158,7 +165,11 @@ Aye.utils.Buffs.UnitIsWellFed = Aye.utils.Buffs.UnitIsWellFed or function(unitID
 		201336, -- 1699 +haste dps
 	}) do
 		if type(spellID) =="number" and buffID == spellID then
-			return 2, "T1";
+			if requiredTier <=1 then
+				return 1, floor(.5+ (expires -GetTime()) /60);
+			else
+				return 2, "T1";
+			end;
 		end;
 	end;
 	

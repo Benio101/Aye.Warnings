@@ -10,6 +10,7 @@ Aye.default.global.Warnings = {
 	Flask = true,						-- Show warning about players with no BiS flask
 	Rune = true,						-- Show warning about players with no BiS rune
 	WellFed = true,						-- Show warning about players with no BiS Well Fed buff
+	WellFedTier = 3,					-- Minimum required Well Fed Tier (3 is BiS only)
 	BuffTimeEnable = true,				-- Enable Minimum Buff Time setting
 	BuffTime = 10,						-- Show warning about players with buffs close to expire (with remaining time left ≤ given minutes)
 	GuildGroupDisable = false,			-- Disable in Guild group

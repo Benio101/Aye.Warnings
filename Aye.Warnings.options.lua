@@ -156,6 +156,26 @@ Aye.options.args.Warnings = {
 						and	not Aye.db.global.Warnings.enablePull
 					end,
 				},
+				WellFedTier = {
+					order = 27,
+					name = "Required Well Fed Tier",
+					desc = "Minimum required Well Fed Tier (3 is BiS only)",
+					type = "range",
+					min = 1,
+					max = 3,
+					softMin = 1,
+					softMax = 3,
+					bigStep = 1,
+					get = function() return Aye.db.global.Warnings.WellFedTier end,
+					set = function(_, v) Aye.db.global.Warnings.WellFedTier = v end,
+					disabled = function() return
+							(
+									not Aye.db.global.Warnings.enableReadyCheck
+								and	not Aye.db.global.Warnings.enablePull
+							)
+						or	not Aye.db.global.Warnings.WellFed
+					end,
+				},
 				header31 = {
 					order = 31,
 					type = "header",
