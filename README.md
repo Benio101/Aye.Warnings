@@ -30,6 +30,13 @@ Aye.Warnings have many configurable options, allowing to disable checking in cho
 
 ![](http://benio.me/pub/res/img/wow/addons/Aye.Warnings.options.png)
 
+## Commands
+
+Show warnings at will:
+```
+/aye warnings
+```
+
 ## Depot
 This addon uses [Aye](https://github.com/Benio101/Aye) as depot.
 
