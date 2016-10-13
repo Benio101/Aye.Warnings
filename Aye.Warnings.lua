@@ -482,6 +482,14 @@ Aye.modules.Warnings.report = function(t, subject)
 	end;
 	
 	if IsInGroup() then
+		-- prepare subject for addon message
+		--if subject == "Offline"		then subject = "Offline"	end;
+		--if subject == "Dead"			then subject = "Dead"		end;
+		if subject == "Far Away"		then subject = "FarAway"	end;
+		if subject == "No BiS Flask"	then subject = "Flask"		end;
+		if subject == "No Rune"			then subject = "Rune"		end;
+		if subject == "Not Well Fed"	then subject = "WellFed"	end;
+		
 		-- tell other Aye users that we handled event already
 		SendAddonMessage("Aye", "Warnings." ..subject, Aye.utils.Chat.GetGroupChannel());
 		
