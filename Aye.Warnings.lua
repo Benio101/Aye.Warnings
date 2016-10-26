@@ -491,20 +491,20 @@ Aye.modules.Warnings.report = function(t, subject)
 		if subject == "Not Well Fed"	then subject = "WellFed"	end;
 		
 		-- tell other Aye users that we handled event already
-		SendAddonMessage("Aye", "Warnings." ..subject, Aye.utils.Chat.GetGroupChannel());
+		SendAddonMessage("Aye", "Warnings." ..subject, "RAID");
 		
 		-- tell ExRT that Aye handled raidcheck buffs already and instruct him not to do it too
 		-- for some incomprehensible reson, ExRT shall listen us only if our nick is… earlier in alphabetical order than message recipient's name,
 		-- and only if recipient isn't group leader or assistant. finally, if we are group leader or assistant, and recipient not,
 		-- ExRT shall listen to us even if our name is later in alphabetical order than message recipient's name.
 		-- this unreliable spam preventing depends on character name and needs to be fixed in ExRT
-		if subject == "Flask"	then SendAddonMessage("raidcheck", "FOOD",	Aye.utils.Chat.GetGroupChannel()) end;
-		if subject == "Rune"	then SendAddonMessage("raidcheck", "FLASK",	Aye.utils.Chat.GetGroupChannel()) end;
-		if subject == "WellFed"	then SendAddonMessage("raidcheck", "RUNES",	Aye.utils.Chat.GetGroupChannel()) end;
+		if subject == "Flask"	then SendAddonMessage("raidcheck", "FOOD",	"RAID") end;
+		if subject == "Rune"	then SendAddonMessage("raidcheck", "FLASK",	"RAID") end;
+		if subject == "WellFed"	then SendAddonMessage("raidcheck", "RUNES",	"RAID") end;
 		
 		-- tell RBS that Aye handled raidcheck buffs already and instruct him not to do it too
 		-- for some incomprehensible reson, ExRT won't listen uf recipient nick is… Шуршик, Шурши or Шурш,
 		-- or if recipient is group leader or assistant. finally, RSC packs Flask, Rune and WellFed checks in one, single message (a50)
-		SendAddonMessage("RSCaddon", "a50", Aye.utils.Chat.GetGroupChannel());
+		SendAddonMessage("RSCaddon", "a50", "RAID");
 	end;
 end;
