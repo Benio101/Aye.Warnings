@@ -179,6 +179,12 @@ Aye.utils.Buffs.UnitIsWellFed = Aye.utils.Buffs.UnitIsWellFed or function(unitID
 		return 3, "E";
 	end
 	
+	-- Food & Drink
+	local _, _, _, _, _, _, eating = UnitBuff(unitID, GetSpellInfo(192002)); -- Food & Drink
+	if type(eating) =="number" and eating >0 then
+		return 3, "E";
+	end
+	
 	-- Poor Fed
 	if type(expires) =="number" and expires >0 and type(value2) =="number" and value2 >=0 then
 		return 2, value2 ==0 and GetSpellLink(spellID) or value2;
