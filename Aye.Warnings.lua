@@ -481,7 +481,10 @@ Aye.modules.Warnings.report = function(t, subject)
 		SendChatMessage(m, Aye.db.global.Warnings.channel);
 	end;
 	
-	if IsInGroup() then
+	if
+			IsInGroup()
+		and	Aye.db.global.Warnings.channel ~= "Print"
+	then
 		-- prepare subject for addon message
 		--if subject == "Offline"		then subject = "Offline"	end;
 		--if subject == "Dead"			then subject = "Dead"		end;
