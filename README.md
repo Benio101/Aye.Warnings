@@ -28,6 +28,8 @@ Aye.Warnings supports cross addon support, and cooperates with the following add
 ## Options
 Aye.Warnings have many configurable options, allowing to disable checking in chosen instance types or group types. Options allows to adjust remaining buff duration, choose raporting chat channel, and more…
 
+To access options, open Game Memu → Interface → Addons tab → Aye → Aye.Warnings.
+
 ![](http://benio.me/pub/res/img/wow/addons/Aye.Warnings.options.png)
 
 ## Commands
