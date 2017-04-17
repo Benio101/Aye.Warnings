@@ -19,19 +19,13 @@ Aye.options.args.Warnings = {
 				.. " Not Well Fed (3): Foo, Bar (75), Baz (|cffffffff|Hitem:109147:0:0:0:0:0:0:0:0:0:0|h[Draenic Intellect Flask]|h|r)\n"
 			,
 		},
-		enableReadyCheck = {
+		enable = {
 			order = 3,
-			name = "Enable on Ready Check",
+			name = "Enable",
+			desc = "Enable Warnings",
 			type = "toggle",
-			get = function() return Aye.db.global.Warnings.enableReadyCheck end,
-			set = function(_, v) Aye.db.global.Warnings.enableReadyCheck = v end,
-		},
-		enablePull = {
-			order = 4,
-			name = "Enable on Pull",
-			type = "toggle",
-			get = function() return Aye.db.global.Warnings.enablePull end,
-			set = function(_, v) Aye.db.global.Warnings.enablePull = v end,
+			get = function() return Aye.db.global.Warnings.enable end,
+			set = function(_, v) Aye.db.global.Warnings.enable = v end,
 		},
 		execute5 = {
 			order = 5,
@@ -71,85 +65,119 @@ Aye.options.args.Warnings = {
 				and	not Aye.db.global.Warnings.enablePull
 			end,
 		},
-		header11 = {
+		enableReadyCheck = {
 			order = 11,
+			name = "|cffe6cc80Enable|r on Ready Check",
+			type = "toggle",
+			get = function() return Aye.db.global.Warnings.enableReadyCheck end,
+			set = function(_, v) Aye.db.global.Warnings.enableReadyCheck = v end,
+			disabled = function() return not Aye.db.global.Warnings.enable end,
+		},
+		enablePull = {
+			order = 12,
+			name = "|cffe6cc80Enable|r on Pull Timer",
+			type = "toggle",
+			get = function() return Aye.db.global.Warnings.enablePull end,
+			set = function(_, v) Aye.db.global.Warnings.enablePull = v end,
+			disabled = function() return not Aye.db.global.Warnings.enable end,
+		},
+		header31 = {
+			order = 31,
 			type = "header",
 			name = "Warning subjects",
 		},
 		Offline = {
-			order = 13,
-			name = "Offline",
+			order = 33,
+			name = "|cffe6cc80Report|r Offline",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.Offline end,
 			set = function(_, v) Aye.db.global.Warnings.Offline = v end,
 			disabled = function() return
-					not Aye.db.global.Warnings.enableReadyCheck
-				and	not Aye.db.global.Warnings.enablePull
+					not Aye.db.global.Warnings.enable
+				or	(
+							not Aye.db.global.Warnings.enableReadyCheck
+						and	not Aye.db.global.Warnings.enablePull
+					)
 			end,
 		},
 		Dead = {
-			order = 14,
-			name = "Dead",
+			order = 34,
+			name = "|cffe6cc80Report|r Dead",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.Dead end,
 			set = function(_, v) Aye.db.global.Warnings.Dead = v end,
 			disabled = function() return
-					not Aye.db.global.Warnings.enableReadyCheck
-				and	not Aye.db.global.Warnings.enablePull
+					not Aye.db.global.Warnings.enable
+				or	(
+							not Aye.db.global.Warnings.enableReadyCheck
+						and	not Aye.db.global.Warnings.enablePull
+					)
 			end,
 		},
 		FarAway = {
-			order = 16,
-			name = "Far away",
+			order = 36,
+			name = "|cffe6cc80Report|r Far away",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.FarAway end,
 			set = function(_, v) Aye.db.global.Warnings.FarAway = v end,
 			disabled = function() return
-					not Aye.db.global.Warnings.enableReadyCheck
-				and	not Aye.db.global.Warnings.enablePull
+					not Aye.db.global.Warnings.enable
+				or	(
+							not Aye.db.global.Warnings.enableReadyCheck
+						and	not Aye.db.global.Warnings.enablePull
+					)
 			end,
 		},
-		group21 = {
-			order = 21,
+		group41 = {
+			order = 41,
 			type = "group",
 			inline = true,
 			name = "",
 			args = {
 				Flask = {
-					order = 23,
-					name = "No BiS Flask",
+					order = 43,
+					name = "|cffe6cc80Report|r No BiS Flask",
 					type = "toggle",
 					get = function() return Aye.db.global.Warnings.Flask end,
 					set = function(_, v) Aye.db.global.Warnings.Flask = v end,
 					disabled = function() return
-							not Aye.db.global.Warnings.enableReadyCheck
-						and	not Aye.db.global.Warnings.enablePull
+							not Aye.db.global.Warnings.enable
+						or	(
+									not Aye.db.global.Warnings.enableReadyCheck
+								and	not Aye.db.global.Warnings.enablePull
+							)
 					end,
 				},
 				Rune = {
-					order = 24,
-					name = "No Rune",
+					order = 44,
+					name = "|cffe6cc80Report|r No Rune",
 					type = "toggle",
 					get = function() return Aye.db.global.Warnings.Rune end,
 					set = function(_, v) Aye.db.global.Warnings.Rune = v end,
 					disabled = function() return
-							not Aye.db.global.Warnings.enableReadyCheck
-						and	not Aye.db.global.Warnings.enablePull
+							not Aye.db.global.Warnings.enable
+						or	(
+									not Aye.db.global.Warnings.enableReadyCheck
+								and	not Aye.db.global.Warnings.enablePull
+							)
 					end,
 				},
 				WellFed = {
-					order = 26,
-					name = "Not Well Fed",
+					order = 46,
+					name = "|cffe6cc80Report|r Not Well Fed",
 					type = "toggle",
 					get = function() return Aye.db.global.Warnings.WellFed end,
 					set = function(_, v) Aye.db.global.Warnings.WellFed = v end,
 					disabled = function() return
-							not Aye.db.global.Warnings.enableReadyCheck
-						and	not Aye.db.global.Warnings.enablePull
+							not Aye.db.global.Warnings.enable
+						or	(
+									not Aye.db.global.Warnings.enableReadyCheck
+								and	not Aye.db.global.Warnings.enablePull
+							)
 					end,
 				},
 				WellFedTier = {
-					order = 27,
+					order = 47,
 					name = "Required Well Fed Tier",
 					desc = "Minimum required Well Fed Tier\n\nTier 1: +225 stat or |cffffffff|Hitem:133564::::::::110:265::::::|h[Spiced Rib Roast]|h|r\n"
 						.. "Tier 2: +300 stat or |cffffffff|Hitem:133569::::::::110:265::::::|h[Drogbar-Style Salmon]|h|r\n"
@@ -166,27 +194,33 @@ Aye.options.args.Warnings = {
 					set = function(_, v) Aye.db.global.Warnings.WellFedTier = v end,
 					disabled = function() return
 							(
-									not Aye.db.global.Warnings.enableReadyCheck
-								and	not Aye.db.global.Warnings.enablePull
+									not Aye.db.global.Warnings.enable
+								or	(
+											not Aye.db.global.Warnings.enableReadyCheck
+										and	not Aye.db.global.Warnings.enablePull
+									)
 							)
 						or	not Aye.db.global.Warnings.WellFed
 					end,
 				},
-				header31 = {
-					order = 31,
+				header51 = {
+					order = 51,
 					type = "header",
 					name = "Minimum Buff Time",
 				},
 				BuffTimeEnable = {
-					order = 33,
+					order = 53,
 					name = "Enable Minimum Buff Time",
 					type = "toggle",
 					get = function() return Aye.db.global.Warnings.BuffTimeEnable end,
 					set = function(_, v) Aye.db.global.Warnings.BuffTimeEnable = v end,
 					disabled = function() return
 							(
-									not Aye.db.global.Warnings.enableReadyCheck
-								and	not Aye.db.global.Warnings.enablePull
+									not Aye.db.global.Warnings.enable
+								or	(
+											not Aye.db.global.Warnings.enableReadyCheck
+										and	not Aye.db.global.Warnings.enablePull
+									)
 							)
 						or	(
 									not Aye.db.global.Warnings.Flask
@@ -197,7 +231,7 @@ Aye.options.args.Warnings = {
 					end,
 				},
 				BuffTime = {
-					order = 34,
+					order = 54,
 					name = "Minimum Buff Time |cff9d9d9d(min)|r",
 					desc = "Show warning about players with buffs close to expire |cff9d9d9d(with remaining time left ≤ given minutes)|r",
 					type = "range",
@@ -210,8 +244,11 @@ Aye.options.args.Warnings = {
 					set = function(_, v) Aye.db.global.Warnings.BuffTime = v end,
 					disabled = function() return
 							(
-									not Aye.db.global.Warnings.enableReadyCheck
-								and	not Aye.db.global.Warnings.enablePull
+									not Aye.db.global.Warnings.enable
+								or	(
+											not Aye.db.global.Warnings.enableReadyCheck
+										and	not Aye.db.global.Warnings.enablePull
+									)
 							)
 						or	not Aye.db.global.Warnings.BuffTimeEnable
 						or	(
@@ -224,13 +261,13 @@ Aye.options.args.Warnings = {
 				},
 			},
 		},
-		header51 = {
-			order = 51,
+		header71 = {
+			order = 71,
 			type = "header",
 			name = "Instance Filter",
 		},
 		GuildGroupDisable = {
-			order = 53,
+			order = 73,
 			name = "|cffe6cc80Disable|r in Ally Group",
 			desc = "|cffe6cc80Disable|r in Ally Group |cff9d9d9d(at least half of other members are either friends or guildmates)|r",
 			type = "toggle",
@@ -238,66 +275,78 @@ Aye.options.args.Warnings = {
 			set = function(_, v) Aye.db.global.Warnings.GuildGroupDisable = v end,
 			disabled = function() return
 					(
-							not Aye.db.global.Warnings.enableReadyCheck
-						and	not Aye.db.global.Warnings.enablePull
+							not Aye.db.global.Warnings.enable
+						or	(
+									not Aye.db.global.Warnings.enableReadyCheck
+								and	not Aye.db.global.Warnings.enablePull
+							)
 					)
 				or	Aye.db.global.Warnings.GuildGroupForceEnable
 			end,
 		},
 		LFGDisable = {
-			order = 54,
+			order = 74,
 			name = "|cffe6cc80Disable|r in LFG group",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.LFGDisable end,
 			set = function(_, v) Aye.db.global.Warnings.LFGDisable = v end,
 			disabled = function() return
 					(
-							not Aye.db.global.Warnings.enableReadyCheck
-						and	not Aye.db.global.Warnings.enablePull
+							not Aye.db.global.Warnings.enable
+						or	(
+									not Aye.db.global.Warnings.enableReadyCheck
+								and	not Aye.db.global.Warnings.enablePull
+							)
 					)
 				or	Aye.db.global.Warnings.LFGForceEnable
 			end,
 		},
 		PvPDisable = {
-			order = 56,
+			order = 76,
 			name = "|cffe6cc80Disable|r on PvP",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.PvPDisable end,
 			set = function(_, v) Aye.db.global.Warnings.PvPDisable = v end,
 			disabled = function() return
 					(
-							not Aye.db.global.Warnings.enableReadyCheck
-						and	not Aye.db.global.Warnings.enablePull
+							not Aye.db.global.Warnings.enable
+						or	(
+									not Aye.db.global.Warnings.enableReadyCheck
+								and	not Aye.db.global.Warnings.enablePull
+							)
 					)
 				or	Aye.db.global.Warnings.PvPForceEnable
 			end,
 		},
 		OutsideInstanceDisable = {
-			order = 57,
+			order = 77,
 			name = "|cffe6cc80Disable|r outside Instance",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.OutsideInstanceDisable end,
 			set = function(_, v) Aye.db.global.Warnings.OutsideInstanceDisable = v end,
 			disabled = function() return
 					(
-							not Aye.db.global.Warnings.enableReadyCheck
-						and	not Aye.db.global.Warnings.enablePull
+							not Aye.db.global.Warnings.enable
+						or	(
+									not Aye.db.global.Warnings.enableReadyCheck
+								and	not Aye.db.global.Warnings.enablePull
+							)
 					)
 				or	Aye.db.global.Warnings.OutsideInstanceForceEnable
 			end,
 		},
-		header61 = {
-			order = 61,
+		header81 = {
+			order = 81,
 			type = "header",
 			name = "Force Enable",
 		},
-		description62 = {
-			order = 62,
+		description82 = {
+			order = 82,
 			type = "description",
 			name = "Force Pull Time Enabled independing of Instance Filter:\n",
 		},
 		GuildGroupForceEnable = {
-			order = 63,
+			order = 83,
 			name = "|cffe6cc80Force Enable|r in Ally Group",
 			desc = "|cffe6cc80Force Enable|r in Ally Group |cff9d9d9d(at least half of other members are either friends or guildmates)|r",
 			type = "toggle",
@@ -305,61 +354,73 @@ Aye.options.args.Warnings = {
 			set = function(_, v) Aye.db.global.Warnings.GuildGroupForceEnable = v end,
 			disabled = function() return
 					(
-							not Aye.db.global.Warnings.enableReadyCheck
-						and	not Aye.db.global.Warnings.enablePull
+							not Aye.db.global.Warnings.enable
+						or	(
+									not Aye.db.global.Warnings.enableReadyCheck
+								and	not Aye.db.global.Warnings.enablePull
+							)
 					)
 				or	Aye.db.global.Warnings.GuildGroupDisable
 			end,
 		},
 		LFGForceEnable = {
-			order = 64,
+			order = 84,
 			name = "|cffe6cc80Force Enable|r in LFG group",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.LFGForceEnable end,
 			set = function(_, v) Aye.db.global.Warnings.LFGForceEnable = v end,
 			disabled = function() return
 					(
-							not Aye.db.global.Warnings.enableReadyCheck
-						and	not Aye.db.global.Warnings.enablePull
+							not Aye.db.global.Warnings.enable
+						or	(
+									not Aye.db.global.Warnings.enableReadyCheck
+								and	not Aye.db.global.Warnings.enablePull
+							)
 					)
 				or	Aye.db.global.Warnings.LFGDisable
 			end,
 		},
 		PvPForceEnable = {
-			order = 66,
+			order = 86,
 			name = "|cffe6cc80Force Enable|r on PvP",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.PvPForceEnable end,
 			set = function(_, v) Aye.db.global.Warnings.PvPForceEnable = v end,
 			disabled = function() return
 					(
-							not Aye.db.global.Warnings.enableReadyCheck
-						and	not Aye.db.global.Warnings.enablePull
+							not Aye.db.global.Warnings.enable
+						or	(
+									not Aye.db.global.Warnings.enableReadyCheck
+								and	not Aye.db.global.Warnings.enablePull
+							)
 					)
 				or	Aye.db.global.Warnings.PvPDisable
 			end,
 		},
 		OutsideInstanceForceEnable = {
-			order = 67,
+			order = 87,
 			name = "|cffe6cc80Force Enable|r outside Instance",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.OutsideInstanceForceEnable end,
 			set = function(_, v) Aye.db.global.Warnings.OutsideInstanceForceEnable = v end,
 			disabled = function() return
 					(
-							not Aye.db.global.Warnings.enableReadyCheck
-						and	not Aye.db.global.Warnings.enablePull
+							not Aye.db.global.Warnings.enable
+						or	(
+									not Aye.db.global.Warnings.enableReadyCheck
+								and	not Aye.db.global.Warnings.enablePull
+							)
 					)
 				or	Aye.db.global.Warnings.OutsideInstanceDisable
 			end,
 		},
-		header71 = {
-			order = 71,
+		header91 = {
+			order = 91,
 			type = "header",
 			name = "Chat Channel",
 		},
-		description72 = {
-			order = 72,
+		description92 = {
+			order = 92,
 			type = "description",
 			name = "\"|cffe6cc80Raid|r\" means \"|cfff3e6c0Instance|r\" in LFR, or \"|cfff3e6c0Party|r\" if player is not in raid."
 				.. "\n\"|cffe6cc80Raid Warning|r\" channel behaves like \"|cffe6cc80Raid|r\" if player cannot Raid Warning."
@@ -367,7 +428,7 @@ Aye.options.args.Warnings = {
 			,
 		},
 		channel = {
-			order = 73,
+			order = 93,
 			name = "Chat Channel",
 			desc = "The chat channel where message will be sent",
 			type = "select",
@@ -384,12 +445,15 @@ Aye.options.args.Warnings = {
 			get = function() return Aye.db.global.Warnings.channel end,
 			set = function(_, v) Aye.db.global.Warnings.channel = v end,
 			disabled = function() return
-					not Aye.db.global.Warnings.enableReadyCheck
-				and	not Aye.db.global.Warnings.enablePull
+					not Aye.db.global.Warnings.enable
+				or	(
+							not Aye.db.global.Warnings.enableReadyCheck
+						and	not Aye.db.global.Warnings.enablePull
+					)
 			end,
 		},
 		forcePrintInGuildGroup = {
-			order = 74,
+			order = 94,
 			name = "|cffe6cc80Force Print|r in Ally Group",
 			desc = "In Ally Group |cff9d9d9d(at least half of other members are either friends or guildmates)|r prints message instead of sending it on chat",
 			type = "toggle",
@@ -397,19 +461,22 @@ Aye.options.args.Warnings = {
 			set = function(_, v) Aye.db.global.Warnings.forcePrintInGuildGroup = v end,
 			disabled = function() return
 					(
-							not Aye.db.global.Warnings.enableReadyCheck
-						and	not Aye.db.global.Warnings.enablePull
+							not Aye.db.global.Warnings.enable
+						or	(
+									not Aye.db.global.Warnings.enableReadyCheck
+								and	not Aye.db.global.Warnings.enablePull
+							)
 					)
 				or	Aye.db.global.Warnings.channel == "Print"
 			end,
 		},
-		header81 = {
-			order = 81,
+		header111 = {
+			order = 111,
 			type = "header",
 			name = "Addon integration",
 		},
-		description82 = {
-			order = 82,
+		description112 = {
+			order = 112,
 			type = "description",
 			name = "\"|cffe6cc80Aye.warnings|r\" addon is intergated with some other similiar addons.\n"
 				.. "Aye sends, receives and honores addon messages informing about warnings handled.\n"
@@ -418,28 +485,34 @@ Aye.options.args.Warnings = {
 			,
 		},
 		EnableIntegrationExRT = {
-			order = 83,
+			order = 113,
 			name = "ExRT integration",
 			desc = "Enable Exorsus Raid Tools addon messages integration",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.EnableIntegrationExRT end,
 			set = function(_, v) Aye.db.global.Warnings.EnableIntegrationExRT = v end,
 			disabled = function() return (
-					not Aye.db.global.Warnings.enableReadyCheck
-				and	not Aye.db.global.Warnings.enablePull
+					not Aye.db.global.Warnings.enable
+				or	(
+							not Aye.db.global.Warnings.enableReadyCheck
+						and	not Aye.db.global.Warnings.enablePull
+					)
 			)
 			end,
 		},
 		EnableIntegrationRSC = {
-			order = 84,
+			order = 114,
 			name = "RSC integration",
 			desc = "Enable Raid Slack Check addon messages integration",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.EnableIntegrationRSC end,
 			set = function(_, v) Aye.db.global.Warnings.EnableIntegrationRSC = v end,
 			disabled = function() return (
-					not Aye.db.global.Warnings.enableReadyCheck
-				and	not Aye.db.global.Warnings.enablePull
+					not Aye.db.global.Warnings.enable
+				or	(
+							not Aye.db.global.Warnings.enableReadyCheck
+						and	not Aye.db.global.Warnings.enablePull
+					)
 			)
 			end,
 		},

@@ -19,7 +19,10 @@ Aye.modules.Warnings.OnEnable = function()
 end;
 
 Aye.modules.Warnings.events.READY_CHECK = function(...)
-	if Aye.db.global.Warnings.enableReadyCheck then
+	if
+			Aye.db.global.Warnings.enable
+		and	Aye.db.global.Warnings.enableReadyCheck
+	then
 		Aye.modules.Warnings.warn();
 	end;
 end;
@@ -126,7 +129,10 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 			seconds = tonumber(seconds);
 			if seconds >0 then
 				-- DBM Pull
-				if Aye.db.global.Warnings.enablePull then
+				if
+						Aye.db.global.Warnings.enable
+					and	Aye.db.global.Warnings.enablePull
+				then
 					Aye.modules.Warnings.warn();
 				end;
 			end;

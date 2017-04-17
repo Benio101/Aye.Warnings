@@ -2,6 +2,7 @@ local Aye = Aye;
 if not Aye.load then return end;
 
 Aye.default.global.Warnings = {
+	enable = true,						-- Enable
 	enableReadyCheck = true,			-- Enable on Ready Check
 	enablePull = true,					-- Enable on Pull
 	Offline = true,						-- Show warning about Offline players
