@@ -22,7 +22,6 @@ Aye.options.args.Warnings = {
 		enableReadyCheck = {
 			order = 3,
 			name = "Enable on Ready Check",
-			desc = "Enable Warnings on Ready Check",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.enableReadyCheck end,
 			set = function(_, v) Aye.db.global.Warnings.enableReadyCheck = v end,
@@ -30,7 +29,6 @@ Aye.options.args.Warnings = {
 		enablePull = {
 			order = 4,
 			name = "Enable on Pull",
-			desc = "Enable Warnings on Pull",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.enablePull end,
 			set = function(_, v) Aye.db.global.Warnings.enablePull = v end,
@@ -81,7 +79,6 @@ Aye.options.args.Warnings = {
 		Offline = {
 			order = 13,
 			name = "Offline",
-			desc = "Show warning about Offline players",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.Offline end,
 			set = function(_, v) Aye.db.global.Warnings.Offline = v end,
@@ -93,7 +90,6 @@ Aye.options.args.Warnings = {
 		Dead = {
 			order = 14,
 			name = "Dead",
-			desc = "Show warning about Dead players",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.Dead end,
 			set = function(_, v) Aye.db.global.Warnings.Dead = v end,
@@ -105,7 +101,6 @@ Aye.options.args.Warnings = {
 		FarAway = {
 			order = 16,
 			name = "Far away",
-			desc = "Show warning about Far Away players",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.FarAway end,
 			set = function(_, v) Aye.db.global.Warnings.FarAway = v end,
@@ -123,7 +118,6 @@ Aye.options.args.Warnings = {
 				Flask = {
 					order = 23,
 					name = "No BiS Flask",
-					desc = "Show warning about players with no BiS flask",
 					type = "toggle",
 					get = function() return Aye.db.global.Warnings.Flask end,
 					set = function(_, v) Aye.db.global.Warnings.Flask = v end,
@@ -135,7 +129,6 @@ Aye.options.args.Warnings = {
 				Rune = {
 					order = 24,
 					name = "No Rune",
-					desc = "Show warning about players with no rune",
 					type = "toggle",
 					get = function() return Aye.db.global.Warnings.Rune end,
 					set = function(_, v) Aye.db.global.Warnings.Rune = v end,
@@ -147,7 +140,6 @@ Aye.options.args.Warnings = {
 				WellFed = {
 					order = 26,
 					name = "Not Well Fed",
-					desc = "Show warning about players with no BiS Well Fed buff",
 					type = "toggle",
 					get = function() return Aye.db.global.Warnings.WellFed end,
 					set = function(_, v) Aye.db.global.Warnings.WellFed = v end,
@@ -159,12 +151,16 @@ Aye.options.args.Warnings = {
 				WellFedTier = {
 					order = 27,
 					name = "Required Well Fed Tier",
-					desc = "Minimum required Well Fed Tier (3 is BiS only)",
+					desc = "Minimum required Well Fed Tier\n\nTier 1: +225 stat or |cffffffff|Hitem:133564::::::::110:265::::::|h[Spiced Rib Roast]|h|r\n"
+						.. "Tier 2: +300 stat or |cffffffff|Hitem:133569::::::::110:265::::::|h[Drogbar-Style Salmon]|h|r\n"
+						.. "Tier 3: +375 stat or |cffffffff|Hitem:133574::::::::110:265::::::|h[Fishbrul Special]|h|r\n"
+						.. "Tier 4: +400 stat or +600 stamina\nTier 5: +500 stat or +750 stamina"
+					,
 					type = "range",
 					min = 1,
-					max = 3,
+					max = 5,
 					softMin = 1,
-					softMax = 3,
+					softMax = 5,
 					bigStep = 1,
 					get = function() return Aye.db.global.Warnings.WellFedTier end,
 					set = function(_, v) Aye.db.global.Warnings.WellFedTier = v end,
@@ -184,7 +180,6 @@ Aye.options.args.Warnings = {
 				BuffTimeEnable = {
 					order = 33,
 					name = "Enable Minimum Buff Time",
-					desc = "Enable Minimum Buff Time setting",
 					type = "toggle",
 					get = function() return Aye.db.global.Warnings.BuffTimeEnable end,
 					set = function(_, v) Aye.db.global.Warnings.BuffTimeEnable = v end,
@@ -204,7 +199,7 @@ Aye.options.args.Warnings = {
 				BuffTime = {
 					order = 34,
 					name = "Minimum Buff Time (min)",
-					desc = "Show warning about players with buffs close to expire (with remaining time left ≤ given minutes)",
+					desc = "Show warning about players with buffs close to expire |cff9d9d9d(with remaining time left ≤ given minutes)|r",
 					type = "range",
 					min = 0,
 					max = 60,
@@ -237,7 +232,6 @@ Aye.options.args.Warnings = {
 		GuildGroupDisable = {
 			order = 53,
 			name = "Disable in Guild group",
-			desc = "Disable Warnings in Guild group",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.GuildGroupDisable end,
 			set = function(_, v) Aye.db.global.Warnings.GuildGroupDisable = v end,
@@ -252,7 +246,6 @@ Aye.options.args.Warnings = {
 		LFGDisable = {
 			order = 54,
 			name = "Disable in LFG group",
-			desc = "Disable Warnings in LFG group",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.LFGDisable end,
 			set = function(_, v) Aye.db.global.Warnings.LFGDisable = v end,
@@ -267,7 +260,6 @@ Aye.options.args.Warnings = {
 		PvPDisable = {
 			order = 56,
 			name = "Disable on PvP",
-			desc = "Disable Warnings on PvP (arena, battleground)",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.PvPDisable end,
 			set = function(_, v) Aye.db.global.Warnings.PvPDisable = v end,
@@ -282,7 +274,6 @@ Aye.options.args.Warnings = {
 		OutsideInstanceDisable = {
 			order = 57,
 			name = "Disable outside Instance",
-			desc = "Disable Warnings outside Instance",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.OutsideInstanceDisable end,
 			set = function(_, v) Aye.db.global.Warnings.OutsideInstanceDisable = v end,
@@ -297,7 +288,7 @@ Aye.options.args.Warnings = {
 		header61 = {
 			order = 61,
 			type = "header",
-			name = "Force Enable on Instances",
+			name = "Force Enable",
 		},
 		description62 = {
 			order = 62,
@@ -307,7 +298,6 @@ Aye.options.args.Warnings = {
 		GuildGroupForceEnable = {
 			order = 63,
 			name = "Force Enable in Guild group",
-			desc = "Force Enable Warnings in Guild group",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.GuildGroupForceEnable end,
 			set = function(_, v) Aye.db.global.Warnings.GuildGroupForceEnable = v end,
@@ -322,7 +312,6 @@ Aye.options.args.Warnings = {
 		LFGForceEnable = {
 			order = 64,
 			name = "Force Enable in LFG group",
-			desc = "Force Enable Warnings in LFG group",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.LFGForceEnable end,
 			set = function(_, v) Aye.db.global.Warnings.LFGForceEnable = v end,
@@ -337,7 +326,6 @@ Aye.options.args.Warnings = {
 		PvPForceEnable = {
 			order = 66,
 			name = "Force Enable on PvP",
-			desc = "Force Enable Warnings on PvP (arena, battleground)",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.PvPForceEnable end,
 			set = function(_, v) Aye.db.global.Warnings.PvPForceEnable = v end,
@@ -352,7 +340,6 @@ Aye.options.args.Warnings = {
 		OutsideInstanceForceEnable = {
 			order = 67,
 			name = "Force Enable outside Instance",
-			desc = "Force Enable Warnings outside Instance",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.OutsideInstanceForceEnable end,
 			set = function(_, v) Aye.db.global.Warnings.OutsideInstanceForceEnable = v end,
