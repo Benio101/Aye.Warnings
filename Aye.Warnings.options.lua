@@ -198,7 +198,7 @@ Aye.options.args.Warnings = {
 				},
 				BuffTime = {
 					order = 34,
-					name = "Minimum Buff Time (min)",
+					name = "Minimum Buff Time |cff9d9d9d(min)|r",
 					desc = "Show warning about players with buffs close to expire |cff9d9d9d(with remaining time left ≤ given minutes)|r",
 					type = "range",
 					min = 0,
@@ -231,7 +231,8 @@ Aye.options.args.Warnings = {
 		},
 		GuildGroupDisable = {
 			order = 53,
-			name = "Disable in Guild group",
+			name = "|cffe6cc80Disable|r in Ally Group",
+			desc = "|cffe6cc80Disable|r in Ally Group |cff9d9d9d(at least half of other members are either friends or guildmates)|r",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.GuildGroupDisable end,
 			set = function(_, v) Aye.db.global.Warnings.GuildGroupDisable = v end,
@@ -245,7 +246,7 @@ Aye.options.args.Warnings = {
 		},
 		LFGDisable = {
 			order = 54,
-			name = "Disable in LFG group",
+			name = "|cffe6cc80Disable|r in LFG group",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.LFGDisable end,
 			set = function(_, v) Aye.db.global.Warnings.LFGDisable = v end,
@@ -259,7 +260,7 @@ Aye.options.args.Warnings = {
 		},
 		PvPDisable = {
 			order = 56,
-			name = "Disable on PvP",
+			name = "|cffe6cc80Disable|r on PvP",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.PvPDisable end,
 			set = function(_, v) Aye.db.global.Warnings.PvPDisable = v end,
@@ -273,7 +274,7 @@ Aye.options.args.Warnings = {
 		},
 		OutsideInstanceDisable = {
 			order = 57,
-			name = "Disable outside Instance",
+			name = "|cffe6cc80Disable|r outside Instance",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.OutsideInstanceDisable end,
 			set = function(_, v) Aye.db.global.Warnings.OutsideInstanceDisable = v end,
@@ -297,7 +298,8 @@ Aye.options.args.Warnings = {
 		},
 		GuildGroupForceEnable = {
 			order = 63,
-			name = "Force Enable in Guild group",
+			name = "|cffe6cc80Force Enable|r in Ally Group",
+			desc = "|cffe6cc80Force Enable|r in Ally Group |cff9d9d9d(at least half of other members are either friends or guildmates)|r",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.GuildGroupForceEnable end,
 			set = function(_, v) Aye.db.global.Warnings.GuildGroupForceEnable = v end,
@@ -311,7 +313,7 @@ Aye.options.args.Warnings = {
 		},
 		LFGForceEnable = {
 			order = 64,
-			name = "Force Enable in LFG group",
+			name = "|cffe6cc80Force Enable|r in LFG group",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.LFGForceEnable end,
 			set = function(_, v) Aye.db.global.Warnings.LFGForceEnable = v end,
@@ -325,7 +327,7 @@ Aye.options.args.Warnings = {
 		},
 		PvPForceEnable = {
 			order = 66,
-			name = "Force Enable on PvP",
+			name = "|cffe6cc80Force Enable|r on PvP",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.PvPForceEnable end,
 			set = function(_, v) Aye.db.global.Warnings.PvPForceEnable = v end,
@@ -339,7 +341,7 @@ Aye.options.args.Warnings = {
 		},
 		OutsideInstanceForceEnable = {
 			order = 67,
-			name = "Force Enable outside Instance",
+			name = "|cffe6cc80Force Enable|r outside Instance",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.OutsideInstanceForceEnable end,
 			set = function(_, v) Aye.db.global.Warnings.OutsideInstanceForceEnable = v end,
@@ -388,8 +390,8 @@ Aye.options.args.Warnings = {
 		},
 		forcePrintInGuildGroup = {
 			order = 74,
-			name = "Force Print in Guild group",
-			desc = "In Guild group prints message instead of sending it on chat",
+			name = "|cffe6cc80Force Print|r in Ally Group",
+			desc = "In Ally Group |cff9d9d9d(at least half of other members are either friends or guildmates)|r prints message instead of sending it on chat",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.forcePrintInGuildGroup end,
 			set = function(_, v) Aye.db.global.Warnings.forcePrintInGuildGroup = v end,

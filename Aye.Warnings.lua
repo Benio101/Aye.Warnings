@@ -370,7 +370,7 @@ Aye.modules.Warnings.warn = function()
 			(
 					(
 							Aye.db.global.Warnings.GuildGroupForceEnable
-						and	InGuildParty()
+						and	Aye.utils.Player.InAllyGroup()
 					)
 				or	(
 							Aye.db.global.Warnings.LFGForceEnable
@@ -389,7 +389,7 @@ Aye.modules.Warnings.warn = function()
 		or	not (
 					(
 							Aye.db.global.Warnings.GuildGroupDisable
-						and	InGuildParty()
+						and	Aye.utils.Player.InAllyGroup()
 					)
 				or	(
 							Aye.db.global.Warnings.LFGDisable
@@ -467,7 +467,7 @@ Aye.modules.Warnings.report = function(t, subject)
 			)
 		or	(
 					Aye.db.global.Warnings.forcePrintInGuildGroup
-				and	InGuildParty()
+				and	Aye.utils.Player.InAllyGroup()
 			)
 	then
 		print(m);
