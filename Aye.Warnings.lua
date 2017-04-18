@@ -2,11 +2,6 @@ local Aye = Aye;
 if not Aye.addModule("Aye.Warnings") then return end;
 
 Aye.modules.Warnings.OnEnable = function()
-	-- start profiling (used to get ms precision)
-	if debugprofilestop() == nil then
-		debugprofilestart();
-	end;
-	
 	RegisterAddonMessagePrefix("Aye");			-- Aye
 	RegisterAddonMessagePrefix("D4");			-- DBM
 	RegisterAddonMessagePrefix("raidcheck");	-- ExRT
@@ -15,7 +10,14 @@ Aye.modules.Warnings.OnEnable = function()
 	-- list of subjects that won't be checked
 	-- considering others made it already
 	-- aka anti chat spam system
-	Aye.modules.Warnings.disableNotify = {};
+	Aye.modules.Warnings.antispam = {
+		Offline	= {cooldown = false},
+		Dead	= {cooldown = false},
+		FarAway	= {cooldown = false},
+		Flask	= {cooldown = false},
+		Rune	= {cooldown = false},
+		WellFed	= {cooldown = false},
+	};
 end;
 
 Aye.modules.Warnings.events.READY_CHECK = function(...)
@@ -59,59 +61,52 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 	then
 		local subject = message:match("^Warnings%.(.+)");
 		
-		if
-				subject == "Offline"
-			and	(
-						Aye.modules.Warnings.disableNotify.Offline == nil
-					or	Aye.modules.Warnings.disableNotify.Offline +10000 >= debugprofilestop()
-				)
-		then
-			Aye.modules.Warnings.disableNotify.Offline = debugprofilestop();
+		if subject == "Offline" then
+			Aye.modules.Warnings.antispam.Offline.cooldown = true;
+			Aye.modules.Warnings.antispam.Offline.timer:Cancel();
+			Aye.modules.Warnings.antispam.Offline.timer = C_Timer.NewTimer(10, function()
+				Aye.modules.Warnings.antispam.Offline.cooldown = false;
+			end);
 		end;
-		if
-				subject == "Dead"
-			and	(
-						Aye.modules.Warnings.disableNotify.Dead == nil
-					or	Aye.modules.Warnings.disableNotify.Dead +10000 >= debugprofilestop()
-				)
-		then
-			Aye.modules.Warnings.disableNotify.Dead = debugprofilestop();
+		
+		if subject == "Dead" then
+			Aye.modules.Warnings.antispam.Dead.cooldown = true;
+			Aye.modules.Warnings.antispam.Dead.timer:Cancel();
+			Aye.modules.Warnings.antispam.Dead.timer = C_Timer.NewTimer(10, function()
+				Aye.modules.Warnings.antispam.Dead.cooldown = false;
+			end);
 		end;
-		if
-				subject == "FarAway"
-			and	(
-						Aye.modules.Warnings.disableNotify.FarAway == nil
-					or	Aye.modules.Warnings.disableNotify.FarAway +10000 >= debugprofilestop()
-				)
-		then
-			Aye.modules.Warnings.disableNotify.FarAway = debugprofilestop();
+		
+		if subject == "FarAway" then
+			Aye.modules.Warnings.antispam.FarAway.cooldown = true;
+			Aye.modules.Warnings.antispam.FarAway.timer:Cancel();
+			Aye.modules.Warnings.antispam.FarAway.timer = C_Timer.NewTimer(10, function()
+				Aye.modules.Warnings.antispam.FarAway.cooldown = false;
+			end);
 		end;
-		if
-				subject == "Flask"
-			and	(
-						Aye.modules.Warnings.disableNotify.Flask == nil
-					or	Aye.modules.Warnings.disableNotify.Flask +10000 >= debugprofilestop()
-				)
-		then
-			Aye.modules.Warnings.disableNotify.Flask = debugprofilestop();
+		
+		if subject == "Flask" then
+			Aye.modules.Warnings.antispam.Flask.cooldown = true;
+			Aye.modules.Warnings.antispam.Flask.timer:Cancel();
+			Aye.modules.Warnings.antispam.Flask.timer = C_Timer.NewTimer(10, function()
+				Aye.modules.Warnings.antispam.Flask.cooldown = false;
+			end);
 		end;
-		if
-				subject == "Rune"
-			and	(
-						Aye.modules.Warnings.disableNotify.Rune == nil
-					or	Aye.modules.Warnings.disableNotify.Rune +10000 >= debugprofilestop()
-				)
-		then
-			Aye.modules.Warnings.disableNotify.Rune = debugprofilestop();
+		
+		if subject == "Rune" then
+			Aye.modules.Warnings.antispam.Rune.cooldown = true;
+			Aye.modules.Warnings.antispam.Rune.timer:Cancel();
+			Aye.modules.Warnings.antispam.Rune.timer = C_Timer.NewTimer(10, function()
+				Aye.modules.Warnings.antispam.Rune.cooldown = false;
+			end);
 		end;
-		if
-				subject == "WellFed"
-			and	(
-						Aye.modules.Warnings.disableNotify.WellFed == nil
-					or	Aye.modules.Warnings.disableNotify.WellFed +10000 >= debugprofilestop()
-				)
-		then
-			Aye.modules.Warnings.disableNotify.WellFed = debugprofilestop();
+		
+		if subject == "WellFed" then
+			Aye.modules.Warnings.antispam.WellFed.cooldown = true;
+			Aye.modules.Warnings.antispam.WellFed.timer:Cancel();
+			Aye.modules.Warnings.antispam.WellFed.timer = C_Timer.NewTimer(10, function()
+				Aye.modules.Warnings.antispam.WellFed.cooldown = false;
+			end);
 		end;
 	end;
 	
@@ -122,6 +117,7 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 		and	(
 					UnitIsGroupLeader(sender)
 				or	UnitIsGroupAssistant(sender)
+				or	UnitIsUnit(sender, "player")
 			)
 	then
 		local seconds = message:match("^PT\t(%d+)");
@@ -142,69 +138,69 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 	-- ExRT raidcheck broadcast handle
 	if
 			prefix == "raidcheck"
+		and	message ~= nil
 		and	Aye.db.global.Warnings.EnableIntegrationExRT
 	then
-		if
-				message == "FOOD"
-			and	(
-						Aye.modules.Warnings.disableNotify.WellFed == nil
-					or	Aye.modules.Warnings.disableNotify.WellFed +10000 >= debugprofilestop()
-				)
-		then
-			Aye.modules.Warnings.disableNotify.WellFed = debugprofilestop();
+		if message == "FOOD" then
+			Aye.modules.Warnings.antispam.WellFed.cooldown = true;
+			Aye.modules.Warnings.antispam.WellFed.timer:Cancel();
+			Aye.modules.Warnings.antispam.WellFed.timer = C_Timer.NewTimer(10, function()
+				Aye.modules.Warnings.antispam.WellFed.cooldown = false;
+			end);
 		end;
-		if
-				message == "FLASK"
-			and	(
-						Aye.modules.Warnings.disableNotify.Flask == nil
-					or	Aye.modules.Warnings.disableNotify.Flask +10000 >= debugprofilestop()
-				)
-		then
-			Aye.modules.Warnings.disableNotify.Flask = debugprofilestop();
+		
+		if message == "FLASK" then
+			Aye.modules.Warnings.antispam.Flask.cooldown = true;
+			Aye.modules.Warnings.antispam.Flask.timer:Cancel();
+			Aye.modules.Warnings.antispam.Flask.timer = C_Timer.NewTimer(10, function()
+				Aye.modules.Warnings.antispam.Flask.cooldown = false;
+			end);
 		end;
-		if
-				message == "RUNES"
-			and	(
-						Aye.modules.Warnings.disableNotify.Rune == nil
-					or	Aye.modules.Warnings.disableNotify.Rune +10000 >= debugprofilestop()
-				)
-		then
-			Aye.modules.Warnings.disableNotify.Rune = debugprofilestop();
+		
+		if message == "RUNES" then
+			Aye.modules.Warnings.antispam.Rune.cooldown = true;
+			Aye.modules.Warnings.antispam.Rune.timer:Cancel();
+			Aye.modules.Warnings.antispam.Rune.timer = C_Timer.NewTimer(10, function()
+				Aye.modules.Warnings.antispam.Rune.cooldown = false;
+			end);
 		end;
 	end;
 	
 	-- RSC raidcheck broadcast handle
 	if
 			prefix == "RSCaddon"
+		and	message ~= nil
 		and	message == "a50"
 		and	Aye.db.global.Warnings.EnableIntegrationRSC
 	then
-		if (
-				Aye.modules.Warnings.disableNotify.WellFed == nil
-			or	Aye.modules.Warnings.disableNotify.WellFed +10000 >= debugprofilestop()
-		)
-		then
-			Aye.modules.Warnings.disableNotify.WellFed = debugprofilestop();
-		end;
-		if (
-				Aye.modules.Warnings.disableNotify.Flask == nil
-			or	Aye.modules.Warnings.disableNotify.Flask +10000 >= debugprofilestop()
-		)
-		then
-			Aye.modules.Warnings.disableNotify.Flask = debugprofilestop();
-		end;
-		if (
-				Aye.modules.Warnings.disableNotify.Rune == nil
-			or	Aye.modules.Warnings.disableNotify.Rune +10000 >= debugprofilestop()
-		)
-		then
-			Aye.modules.Warnings.disableNotify.Rune = debugprofilestop();
-		end;
+		Aye.modules.Warnings.antispam.WellFed.cooldown = true;
+		Aye.modules.Warnings.antispam.WellFed.timer:Cancel();
+		Aye.modules.Warnings.antispam.WellFed.timer = C_Timer.NewTimer(10, function()
+			Aye.modules.Warnings.antispam.WellFed.cooldown = false;
+		end);
+		
+		Aye.modules.Warnings.antispam.Flask.cooldown = true;
+		Aye.modules.Warnings.antispam.Flask.timer:Cancel();
+		Aye.modules.Warnings.antispam.Flask.timer = C_Timer.NewTimer(10, function()
+			Aye.modules.Warnings.antispam.Flask.cooldown = false;
+		end);
+		
+		Aye.modules.Warnings.antispam.Rune.cooldown = true;
+		Aye.modules.Warnings.antispam.Rune.timer:Cancel();
+		Aye.modules.Warnings.antispam.Rune.timer = C_Timer.NewTimer(10, function()
+			Aye.modules.Warnings.antispam.Rune.cooldown = false;
+		end);
 	end;
 end;
 
 Aye.modules.Warnings.slash = function()
-	Aye.modules.Warnings.disableNotify = {};
+	Aye.modules.Warnings.antispam.Offline.cooldown = false;
+	Aye.modules.Warnings.antispam.Dead.cooldown = false;
+	Aye.modules.Warnings.antispam.FarAway.cooldown = false;
+	Aye.modules.Warnings.antispam.Flask.cooldown = false;
+	Aye.modules.Warnings.antispam.Rune.cooldown = false;
+	Aye.modules.Warnings.antispam.WellFed.cooldown = false;
+	
 	Aye.modules.Warnings.warn();
 end;
 
@@ -240,6 +236,7 @@ Aye.modules.Warnings.warn = function()
 		local unitID = UnitInRaid("player") ~= nil and "raid" ..i or (i == 1 and "player" or "party" ..(i -1));
 		local name = UnitName(unitID);
 		
+		-- ignore benched players
 		if
 				Aye.db.global.Warnings.IgnoreMythicBenched
 			and	UnitInRaid(unitID)
@@ -253,10 +250,7 @@ Aye.modules.Warnings.warn = function()
 		if name then
 		if
 				Aye.db.global.Warnings.Offline
-			and	(
-						Aye.modules.Warnings.disableNotify.Offline == nil
-					or	Aye.modules.Warnings.disableNotify.Offline +10000 >= debugprofilestop()
-				)
+			and	not Aye.modules.Warnings.antispam.Offline.cooldown
 			and	not	UnitIsConnected(unitID)
 		then
 			table.insert(t.Offline.t, {["name"] = name});
@@ -265,10 +259,7 @@ Aye.modules.Warnings.warn = function()
 		if UnitIsConnected(unitID) then
 		if
 				Aye.db.global.Warnings.Dead
-			and	(
-						Aye.modules.Warnings.disableNotify.Dead == nil
-					or	Aye.modules.Warnings.disableNotify.Dead +10000 >= debugprofilestop()
-				)
+			and	not Aye.modules.Warnings.antispam.Dead.cooldown
 			and	UnitIsDeadOrGhost(unitID)
 		then
 			table.insert(t.Dead.t, {["name"] = name});
@@ -277,10 +268,7 @@ Aye.modules.Warnings.warn = function()
 		if not UnitIsDeadOrGhost(unitID) then
 		if
 				Aye.db.global.Warnings.FarAway
-			and	(
-						Aye.modules.Warnings.disableNotify.FarAway == nil
-					or	Aye.modules.Warnings.disableNotify.FarAway +10000 >= debugprofilestop()
-				)
+			and	not Aye.modules.Warnings.antispam.FarAway.cooldown
 			and	not	UnitIsVisible(unitID)
 		then
 			table.insert(t.FarAway.t, {["name"] = name});
@@ -294,10 +282,7 @@ Aye.modules.Warnings.warn = function()
 				-- ["t"]able to insert players
 				{
 					["c"] =
-							(
-									Aye.modules.Warnings.disableNotify.Flask == nil
-								or	Aye.modules.Warnings.disableNotify.Flask +10000 >= debugprofilestop()
-							)
+							not Aye.modules.Warnings.antispam.Flask.cooldown
 						and	Aye.db.global.Warnings.Flask,
 					["f"] = Aye.utils.Buffs.UnitHasFlask,
 					["2"] = nil,
@@ -305,10 +290,7 @@ Aye.modules.Warnings.warn = function()
 				},
 				{
 					["c"] =
-							(
-									Aye.modules.Warnings.disableNotify.Rune == nil
-								or	Aye.modules.Warnings.disableNotify.Rune +10000 >= debugprofilestop()
-							)
+							not Aye.modules.Warnings.antispam.Rune.cooldown
 						and	Aye.db.global.Warnings.Rune,
 					["f"] = Aye.utils.Buffs.UnitHasRune,
 					["2"] = nil,
@@ -316,10 +298,7 @@ Aye.modules.Warnings.warn = function()
 				},
 				{
 					["c"] =
-							(
-									Aye.modules.Warnings.disableNotify.WellFed == nil
-								or	Aye.modules.Warnings.disableNotify.WellFed +10000 >= debugprofilestop()
-							)
+							not Aye.modules.Warnings.antispam.WellFed.cooldown
 						and	Aye.db.global.Warnings.WellFed,
 					["f"] = Aye.utils.Buffs.UnitIsWellFed,
 					["2"] = Aye.db.global.Warnings.WellFedTier,
