@@ -32,10 +32,7 @@ Aye.options.args.Warnings = {
 			type = "execute",
 			name = "Disable & Reload",
 			func = function() DisableAddOn("Aye.Warnings"); ReloadUI(); end,
-			hidden = function() return
-					Aye.db.global.Warnings.enableReadyCheck
-				or	Aye.db.global.Warnings.enablePull
-			end,
+			hidden = function() return Aye.db.global.Warnings.enable end,
 		},
 		description6 = {
 			order = 6,
@@ -44,10 +41,7 @@ Aye.options.args.Warnings = {
 				.. "|cff9d9d9dIf you wish to keep this module disabled, you should disable related addon completelly.\n"
 				.. "You can always re–enable module by re–enabling related addon addon the same way.\n|r"
 			,
-			hidden = function() return
-					Aye.db.global.Warnings.enableReadyCheck
-				or	Aye.db.global.Warnings.enablePull
-			end,
+			hidden = function() return Aye.db.global.Warnings.enable end,
 		},
 		execute7 = {
 			order = 7,
@@ -60,10 +54,7 @@ Aye.options.args.Warnings = {
 				Aye.db.global.Warnings = CopyTable(Aye.default.global.Warnings);
 				Aye.libs.ConfigRegistry:NotifyChange("Aye");
 			end,
-			hidden = function() return
-					not Aye.db.global.Warnings.enableReadyCheck
-				and	not Aye.db.global.Warnings.enablePull
-			end,
+			hidden = function() return not Aye.db.global.Warnings.enable end,
 		},
 		enableReadyCheck = {
 			order = 11,
