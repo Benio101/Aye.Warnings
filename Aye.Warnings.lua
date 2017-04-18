@@ -25,7 +25,10 @@ Aye.modules.Warnings.events.READY_CHECK = function(...)
 			Aye.db.global.Warnings.enable
 		and	Aye.db.global.Warnings.enableReadyCheck
 	then
-		Aye.modules.Warnings.warn();
+		Aye.modules.Warnings.timer:Cancel();
+		Aye.modules.Warnings.timer = C_Timer.NewTimer(1, function()
+			Aye.modules.Warnings.warn();
+		end);
 	end;
 end;
 
@@ -130,7 +133,10 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 						Aye.db.global.Warnings.enable
 					and	Aye.db.global.Warnings.enablePull
 				then
-					Aye.modules.Warnings.warn();
+					Aye.modules.Warnings.timer:Cancel();
+					Aye.modules.Warnings.timer = C_Timer.NewTimer(1, function()
+						Aye.modules.Warnings.warn();
+					end);
 				end;
 			end;
 		end;
@@ -202,6 +208,7 @@ Aye.modules.Warnings.slash = function()
 	Aye.modules.Warnings.antispam.Rune.cooldown = false;
 	Aye.modules.Warnings.antispam.WellFed.cooldown = false;
 	
+	Aye.modules.Warnings.timer:Cancel();
 	Aye.modules.Warnings.warn();
 end;
 
