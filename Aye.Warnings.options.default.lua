@@ -5,6 +5,7 @@ Aye.default.global.Warnings = {
 	enable = true,						-- Enable
 	enableReadyCheck = true,			-- Enable on Ready Check
 	enablePull = true,					-- Enable on Pull
+	IgnoreMythicBenched = true,			-- Ignore Mythic Benched players
 	Offline = true,						-- Show warning about Offline players
 	Dead = true,						-- Show warning about Dead players
 	FarAway = true,						-- Show warning about Far Away players

@@ -240,6 +240,16 @@ Aye.modules.Warnings.warn = function()
 		local unitID = UnitInRaid("player") ~= nil and "raid" ..i or (i == 1 and "player" or "party" ..(i -1));
 		local name = UnitName(unitID);
 		
+		if
+				Aye.db.global.Warnings.IgnoreMythicBenched
+			and	UnitInRaid(unitID)
+			and	not IsPartyLFG()
+			and	GetRaidDifficultyID() == DIFFICULTY_PRIMARYRAID_MYTHIC
+		then
+			local _, _, pid = GetRaidRosterInfo(i);
+			if pid >4 then return end;
+		end;
+		
 		if name then
 		if
 				Aye.db.global.Warnings.Offline

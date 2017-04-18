@@ -72,6 +72,24 @@ Aye.options.args.Warnings = {
 			set = function(_, v) Aye.db.global.Warnings.enablePull = v end,
 			disabled = function() return not Aye.db.global.Warnings.enable end,
 		},
+		IgnoreMythicBenched = {
+			order = 19,
+			name = "|cffe6cc80Ignore|r Mythic Benched players |cff9d9d9d(players in Ally Group outside party #1–4)|r",
+			desc = "|cffe6cc80Ignore|r players in Ally Group |cff9d9d9d(at least half of other members are either friends or guildmates)|r on Mythic difficulty that are outside party #1–4.\n\n"
+				.. "|cffe6cc80Ignore|r|cff9d9d9d causes benched players not to be reported at all.|r"
+			,
+			type = "toggle",
+			width = "full",
+			get = function() return Aye.db.global.Warnings.IgnoreMythicBenched end,
+			set = function(_, v) Aye.db.global.Warnings.IgnoreMythicBenched = v end,
+			disabled = function() return
+					not Aye.db.global.Warnings.enable
+				or	(
+							not Aye.db.global.Warnings.enableReadyCheck
+						and	not Aye.db.global.Warnings.enablePull
+					)
+			end,
+		},
 		header31 = {
 			order = 31,
 			type = "header",
