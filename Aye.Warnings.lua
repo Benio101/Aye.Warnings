@@ -31,6 +31,7 @@ end;
 
 Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 	local prefix, message, _, sender = ...;
+	sender = sender:match("^([^%-]+)-");
 	
 	-- Aye Warnings broadcast handle
 	--
