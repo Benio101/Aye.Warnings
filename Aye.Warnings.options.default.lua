@@ -14,6 +14,7 @@ Aye.default.global.Warnings = {
 	WellFedTier = 3,					-- Minimum required Well Fed Tier (5 is BiS only)
 	BuffTimeEnable = true,				-- Enable Minimum Buff Time setting
 	BuffTime = 10,						-- Show warning about players with buffs close to expire (with remaining time left ≤ given minutes)
+	ForceDisableIfMythicBenched = true,	-- Force Disable if Mythic Benched
 	GuildGroupDisable = false,			-- Disable in Guild group
 	LFGDisable = false,					-- Disable in LFG group
 	PvPDisable = true,					-- Disable on PvP (arena, battleground)

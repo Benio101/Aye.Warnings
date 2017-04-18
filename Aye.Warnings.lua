@@ -371,6 +371,12 @@ Aye.modules.Warnings.warn = function()
 		end;
 	end;
 	
+	-- Force Disable if Mythic Benched
+	if
+			Aye.db.global.Warnings.ForceDisableIfMythicBenched
+		and	Aye.utils.Player.IsMythicBenched()
+	then return end;
+	
 	if (
 			-- Force enable
 			(

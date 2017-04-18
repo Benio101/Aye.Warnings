@@ -405,6 +405,24 @@ Aye.options.args.Warnings = {
 				or	Aye.db.global.Warnings.OutsideInstanceDisable
 			end,
 		},
+		ForceDisableIfMythicBenched = {
+			order = 89,
+			name = "|cffe6cc80Force Disable|r if Mythic Benched |cff9d9d9d(in Ally Group outside party #1–4)|r",
+			desc = "|cffe6cc80Force Disable|r in Ally Group |cff9d9d9d(at least half of other members are either friends or guildmates)|r on Mythic difficulty if outside party #1–4.\n\n"
+				.. "|cffe6cc80Force Disable|r|cff9d9d9d is most important and overwrites |cffe6cc80Force Enable|r|cff9d9d9d.|r"
+			,
+			type = "toggle",
+			width = "full",
+			get = function() return Aye.db.global.Warnings.ForceDisableIfMythicBenched end,
+			set = function(_, v) Aye.db.global.Warnings.ForceDisableIfMythicBenched = v end,
+			disabled = function() return
+					not Aye.db.global.Warnings.enable
+				or	(
+							not Aye.db.global.Warnings.enableReadyCheck
+						and	not Aye.db.global.Warnings.enablePull
+					)
+			end,
+		},
 		header91 = {
 			order = 91,
 			type = "header",
