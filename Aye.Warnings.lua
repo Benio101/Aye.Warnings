@@ -2,6 +2,7 @@ local Aye = Aye;
 if not Aye.addModule("Aye.Warnings") then return end;
 
 Aye.modules.Warnings.OnEnable = function()
+	-- register addon prefixes
 	RegisterAddonMessagePrefix("Aye");			-- Aye
 	RegisterAddonMessagePrefix("D4");			-- DBM
 	RegisterAddonMessagePrefix("raidcheck");	-- ExRT
@@ -12,8 +13,10 @@ Aye.modules.Warnings.OnEnable = function()
 	-- aka anti chat spam system
 	Aye.modules.Warnings.antispam = {
 		Offline	= {cooldown = false},
+		AFK		= {cooldown = false},
 		Dead	= {cooldown = false},
 		FarAway	= {cooldown = false},
+		Sick	= {cooldown = false},
 		Flask	= {cooldown = false},
 		Rune	= {cooldown = false},
 		WellFed	= {cooldown = false},
@@ -47,8 +50,10 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 	-- | subject name | subject description                            |
 	-- +--------------+------------------------------------------------+
 	-- |      Offline | Player is Offline                              |
+	-- |          AFK | Player is marked Away From Keyboard            |
 	-- |         Dead | Player is Dead                                 |
 	-- |      FarAway | Player is Far Awar (not UnitIsVisible)         |
+	-- |         Sick | Player has Resurrection Sickness debuff        |
 	-- |        Flask | Player have no BiS flask                       |
 	-- |         Rune | Player have no rune                            |
 	-- |      WellFed | Player have no BiS Well Fed buff (aka no food) |
@@ -73,6 +78,14 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 			end);
 		end;
 		
+		if subject == "AFK" then
+			Aye.modules.Warnings.antispam.AFK.cooldown = true;
+			if Aye.modules.Warnings.antispam.AFK.timer then Aye.modules.Warnings.antispam.AFK.timer:Cancel() end;
+			Aye.modules.Warnings.antispam.AFK.timer = C_Timer.NewTimer(10, function()
+				Aye.modules.Warnings.antispam.AFK.cooldown = false;
+			end);
+		end;
+		
 		if subject == "Dead" then
 			Aye.modules.Warnings.antispam.Dead.cooldown = true;
 			Aye.modules.Warnings.antispam.Dead.timer:Cancel();
@@ -86,6 +99,14 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 			Aye.modules.Warnings.antispam.FarAway.timer:Cancel();
 			Aye.modules.Warnings.antispam.FarAway.timer = C_Timer.NewTimer(10, function()
 				Aye.modules.Warnings.antispam.FarAway.cooldown = false;
+			end);
+		end;
+		
+		if subject == "Sick" then
+			Aye.modules.Warnings.antispam.Sick.cooldown = true;
+			if Aye.modules.Warnings.antispam.Sick.timer then Aye.modules.Warnings.antispam.Sick.timer:Cancel() end;
+			Aye.modules.Warnings.antispam.Sick.timer = C_Timer.NewTimer(10, function()
+				Aye.modules.Warnings.antispam.Sick.cooldown = false;
 			end);
 		end;
 		
@@ -202,8 +223,10 @@ end;
 
 Aye.modules.Warnings.slash = function()
 	Aye.modules.Warnings.antispam.Offline.cooldown = false;
+	Aye.modules.Warnings.antispam.AFK.cooldown = false;
 	Aye.modules.Warnings.antispam.Dead.cooldown = false;
 	Aye.modules.Warnings.antispam.FarAway.cooldown = false;
+	Aye.modules.Warnings.antispam.Sick.cooldown = false;
 	Aye.modules.Warnings.antispam.Flask.cooldown = false;
 	Aye.modules.Warnings.antispam.Rune.cooldown = false;
 	Aye.modules.Warnings.antispam.WellFed.cooldown = false;
@@ -228,12 +251,14 @@ Aye.modules.Warnings.warn = function()
 	--	name	--				name of player
 	--	note	-- optional,	additional note to display for player
 	local t = {
-		Offline		= {t = {}, name = "Offline"},
-		Dead		= {t = {}, name = "Dead"},
-		FarAway		= {t = {}, name = "Far Away"},
-		Flask		= {t = {}, name = "No BiS Flask"},
-		Rune		= {t = {}, name = "No Rune"},
-		WellFed		= {t = {}, name = "Not Well Fed"},
+		Offline	= {t = {}, name = "Offline"},
+		AFK		= {t = {}, name = "AFK"},
+		Dead	= {t = {}, name = "Dead"},
+		FarAway	= {t = {}, name = "Far Away"},
+		Sick	= {t = {}, name = GetSpellLink(15007)},
+		Flask	= {t = {}, name = "No BiS Flask"},
+		Rune	= {t = {}, name = "No Rune"},
+		WellFed	= {t = {}, name = "Not Well Fed"},
 	};
 	
 	-- check subjects
@@ -266,6 +291,14 @@ Aye.modules.Warnings.warn = function()
 		
 		if UnitIsConnected(unitID) then
 		if
+				Aye.db.global.Warnings.AFK
+			and	not Aye.modules.Warnings.antispam.AFK.cooldown
+			and	UnitIsAFK(unitID)
+		then
+			table.insert(t.AFK.t, {["name"] = name});
+		end;
+		
+		if
 				Aye.db.global.Warnings.Dead
 			and	not Aye.modules.Warnings.antispam.Dead.cooldown
 			and	UnitIsDeadOrGhost(unitID)
@@ -283,6 +316,18 @@ Aye.modules.Warnings.warn = function()
 		end;
 		
 		if UnitIsVisible(unitID) then -- credits for checking function to: Vlad#WoWUIDev and nebula#WoWUIDev
+			if
+					Aye.db.global.Warnings.ResurrectionSickness
+				and	not Aye.modules.Warnings.antispam.Sick.cooldown
+				and	not	UnitAura(unitID, "Resurrection Sickness")
+			then
+				local _, _, _, _, _, _, expires = UnitDebuff(unitID, GetSpellInfo(15007));
+				if type(expires) =="number" and expires >0 then
+					local note = floor(.5+ (expires -GetTime()) /60);
+					table.insert(t.Sick.t, {["name"] = name, ["note"] = note});
+				end;
+			end;
+			
 			for k, v in pairs({
 				-- ["c"]ondition setting
 				-- ["f"]unction to check condition
@@ -495,12 +540,14 @@ Aye.modules.Warnings.report = function(t, subject)
 		and	Aye.db.global.Warnings.channel ~= "Print"
 	then
 		-- prepare subject for addon message
-		--if subject == "Offline"		then subject = "Offline"	end;
-		--if subject == "Dead"			then subject = "Dead"		end;
-		if subject == "Far Away"		then subject = "FarAway"	end;
-		if subject == "No BiS Flask"	then subject = "Flask"		end;
-		if subject == "No Rune"			then subject = "Rune"		end;
-		if subject == "Not Well Fed"	then subject = "WellFed"	end;
+		--if subject == "Offline"			then subject = "Offline"	end;
+		--if subject == "AFK"				then subject = "AFK"		end;
+		--if subject == "Dead"				then subject = "Dead"		end;
+		if subject == "Far Away"			then subject = "FarAway"	end;
+		if subject == GetSpellLink(15007)	then subject = "Sick"		end;
+		if subject == "No BiS Flask"		then subject = "Flask"		end;
+		if subject == "No Rune"				then subject = "Rune"		end;
+		if subject == "Not Well Fed"		then subject = "WellFed"	end;
 		
 		-- tell other Aye users that we handled event already
 		SendAddonMessage("Aye", "Warnings." ..subject, Aye.utils.Chat.GetGroupChannel(false));

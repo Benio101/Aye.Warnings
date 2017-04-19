@@ -109,8 +109,22 @@ Aye.options.args.Warnings = {
 					)
 			end,
 		},
-		Dead = {
+		AFK = {
 			order = 34,
+			name = "|cffe6cc80Report|r AFK",
+			type = "toggle",
+			get = function() return Aye.db.global.Warnings.AFK end,
+			set = function(_, v) Aye.db.global.Warnings.AFK = v end,
+			disabled = function() return
+					not Aye.db.global.Warnings.enable
+				or	(
+							not Aye.db.global.Warnings.enableReadyCheck
+						and	not Aye.db.global.Warnings.enablePull
+					)
+			end,
+		},
+		Dead = {
+			order = 36,
 			name = "|cffe6cc80Report|r Dead",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.Dead end,
@@ -124,11 +138,26 @@ Aye.options.args.Warnings = {
 			end,
 		},
 		FarAway = {
-			order = 36,
+			order = 37,
 			name = "|cffe6cc80Report|r Far away",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.FarAway end,
 			set = function(_, v) Aye.db.global.Warnings.FarAway = v end,
+			disabled = function() return
+					not Aye.db.global.Warnings.enable
+				or	(
+							not Aye.db.global.Warnings.enableReadyCheck
+						and	not Aye.db.global.Warnings.enablePull
+					)
+			end,
+		},
+		ResurrectionSickness = {
+			order = 39,
+			name = "|cffe6cc80Report|r players with " ..GetSpellLink(15007) .." debuff",
+			type = "toggle",
+			width = "full",
+			get = function() return Aye.db.global.Warnings.ResurrectionSickness end,
+			set = function(_, v) Aye.db.global.Warnings.ResurrectionSickness = v end,
 			disabled = function() return
 					not Aye.db.global.Warnings.enable
 				or	(
@@ -444,7 +473,7 @@ Aye.options.args.Warnings = {
 		header91 = {
 			order = 91,
 			type = "header",
-			name = "Chat Channel",
+			name = "Chat",
 		},
 		description92 = {
 			order = 92,
