@@ -526,6 +526,36 @@ Aye.options.args.Warnings = {
 				or	Aye.db.global.Warnings.channel == "Print"
 			end,
 		},
+		reportWithAyePrefix = {
+			order = 97,
+			name = "Add inline |cff9d9d9d\"[|r|cffe6cc80Aye|r|cff9d9d9d] \"|r prefix before report",
+			type = "toggle",
+			width = "full",
+			get = function() return Aye.db.global.Warnings.reportWithAyePrefix end,
+			set = function(_, v) Aye.db.global.Warnings.reportWithAyePrefix = v end,
+			disabled = function() return
+					not Aye.db.global.Warnings.enable
+				or	(
+							not Aye.db.global.Warnings.enableReadyCheck
+						and	not Aye.db.global.Warnings.enablePull
+					)
+			end,
+		},
+		reportWithWarningPrefix = {
+			order = 98,
+			name = "Add inline |cff9d9d9d\"" ..GetSpellLink(176781) .." \"|r prefix before report",
+			type = "toggle",
+			width = "full",
+			get = function() return Aye.db.global.Warnings.reportWithWarningPrefix end,
+			set = function(_, v) Aye.db.global.Warnings.reportWithWarningPrefix = v end,
+			disabled = function() return
+					not Aye.db.global.Warnings.enable
+				or	(
+							not Aye.db.global.Warnings.enableReadyCheck
+						and	not Aye.db.global.Warnings.enablePull
+					)
+			end,
+		},
 		header111 = {
 			order = 111,
 			type = "header",

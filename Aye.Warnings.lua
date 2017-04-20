@@ -500,8 +500,15 @@ Aye.modules.Warnings.report = function(t, subject)
 		end;
 	end;
 	
-	m = "[Aye] ".. GetSpellLink(176781) -- "WARNING!" spell
-		.." " ..subject .." (" ..#t .."): " ..m;
+	local preM = "";
+	if Aye.db.global.Warnings.reportWithAyePrefix then
+		preM = preM .."[Aye] ";
+	end;
+	if Aye.db.global.Warnings.reportWithWarningPrefix then
+		preM = preM ..GetSpellLink(176781) .." "; -- "WARNING!" spell
+	end;
+	
+	m = preM ..subject .." (" ..#t .."): " ..m;
 	
 	if
 			Aye.db.global.Warnings.channel == "Print"

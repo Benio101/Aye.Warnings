@@ -28,6 +28,8 @@ Aye.default.global.Warnings = {
 	OutsideInstanceForceEnable = false,	-- Force Enable outside Instance
 	channel = "Raid",					-- The chat channel where message will be sent
 	forcePrintInGuildGroup = false,		-- In Guild group prints message instead of sending it on chat
+	reportWithAyePrefix = false,		-- Add inline "[Aye] " prefix before report
+	reportWithWarningPrefix = true,		-- Add inline "[WARNING!] " prefix before report
 	EnableIntegrationExRT = true,		-- Enable Exorsus Raid Tools addon messages integration
 	EnableIntegrationRSC = true,		-- Enable Raid Slack Check addon messages integration
 };
