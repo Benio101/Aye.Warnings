@@ -7,18 +7,22 @@ Show conditional warnings on Ready Check and Pull, about slacking players.
 Aye.Warnings performs raid slacking check on Ready Check and [DBM](https://mods.curse.com/addons/wow/deadly-boss-mods) pull. Reports warnings for the following slacks:
 
 - Offline
+- AFK
 - Dead
 - Far away
+- Resurrection Sickness Debuff
 - No BiS flask
 - No BiS Well Fed Buff
 - No rune
 
-Beside that, Aye.Warnings can check if buffs ends soon, raport what type of weak buff player have on, or simply type it's value. Finally, Aye.Warnings is also able to show that certain player is currently eating.
+Aye.Warnings ignores Mythic Benched players, aswell as can remain silent as long as player is benched itself.
 
-##Antispam module
+Beside that, Aye.Warnings can check if buffs ends soon, raport what type of weak buff player have on, or simply type it's value.
+Finally, Aye.Warnings is also able to show that certain player is currently eating.
+
+## Antispam module
 
 Aye.Warnings support Antispam module, not displaying same information by multiple players, using Addon Messages.
-
 Aye.Warnings supports cross addon support, and cooperates with the following addons:
 
 - Aye.Warnings
