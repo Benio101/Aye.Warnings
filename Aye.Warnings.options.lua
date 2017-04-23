@@ -381,7 +381,7 @@ Aye.options.args.Warnings = {
 		description82 = {
 			order = 82,
 			type = "description",
-			name = "Force Pull Time Enabled independing of Instance Filter:\n",
+			name = "|cffe6cc80Force Enable|r Warnings independing of Instance Filter.\n",
 		},
 		GuildGroupForceEnable = {
 			order = 83,
@@ -452,12 +452,20 @@ Aye.options.args.Warnings = {
 				or	Aye.db.global.Warnings.OutsideInstanceDisable
 			end,
 		},
+		header91 = {
+			order = 91,
+			type = "header",
+			name = "Force Disable",
+		},
+		description92 = {
+			order = 92,
+			type = "description",
+			name = "|cffe6cc80Force Disable|r is most important and overwrites even |cffe6cc80Force Enable|r.\n",
+		},
 		ForceDisableIfMythicBenched = {
-			order = 89,
+			order = 93,
 			name = "|cffe6cc80Force Disable|r if Mythic Benched |cff9d9d9d(in Ally Group outside party #1–4)|r",
-			desc = "|cffe6cc80Force Disable|r in Ally Group |cff9d9d9d(at least half of other members are either friends or guildmates)|r on Mythic difficulty if outside party #1–4.\n\n"
-				.. "|cffe6cc80Force Disable|r|cff9d9d9d is most important and overwrites |cffe6cc80Force Enable|r|cff9d9d9d.|r"
-			,
+			desc = "|cffe6cc80Force Disable|r in Ally Group |cff9d9d9d(at least half of other members are either friends or guildmates)|r on Mythic difficulty if outside party #1–4.\n\n",
 			type = "toggle",
 			width = "full",
 			get = function() return Aye.db.global.Warnings.ForceDisableIfMythicBenched end,
@@ -470,13 +478,13 @@ Aye.options.args.Warnings = {
 					)
 			end,
 		},
-		header91 = {
-			order = 91,
+		header111 = {
+			order = 111,
 			type = "header",
 			name = "Chat",
 		},
-		description92 = {
-			order = 92,
+		description112 = {
+			order = 112,
 			type = "description",
 			name = "\"|cffe6cc80Raid|r\" means \"|cfff3e6c0Instance|r\" in LFR, or \"|cfff3e6c0Party|r\" if player is not in raid."
 				.. "\n\"|cffe6cc80Raid Warning|r\" channel behaves like \"|cffe6cc80Raid|r\" if player cannot Raid Warning."
@@ -484,7 +492,7 @@ Aye.options.args.Warnings = {
 			,
 		},
 		channel = {
-			order = 93,
+			order = 113,
 			name = "Chat Channel",
 			desc = "The chat channel where message will be sent",
 			type = "select",
@@ -509,7 +517,7 @@ Aye.options.args.Warnings = {
 			end,
 		},
 		forcePrintInGuildGroup = {
-			order = 94,
+			order = 114,
 			name = "|cffe6cc80Force Print|r in Ally Group",
 			desc = "In Ally Group |cff9d9d9d(at least half of other members are either friends or guildmates)|r prints message instead of sending it on chat",
 			type = "toggle",
@@ -527,7 +535,7 @@ Aye.options.args.Warnings = {
 			end,
 		},
 		reportWithAyePrefix = {
-			order = 97,
+			order = 117,
 			name = "Add inline |cff9d9d9d\"[|r|cffe6cc80Aye|r|cff9d9d9d] \"|r prefix before report",
 			type = "toggle",
 			width = "full",
@@ -542,7 +550,7 @@ Aye.options.args.Warnings = {
 			end,
 		},
 		reportWithWarningPrefix = {
-			order = 98,
+			order = 118,
 			name = "Add inline |cff9d9d9d\"" ..GetSpellLink(176781) .." \"|r prefix before report",
 			type = "toggle",
 			width = "full",
@@ -556,13 +564,13 @@ Aye.options.args.Warnings = {
 					)
 			end,
 		},
-		header111 = {
-			order = 111,
+		header131 = {
+			order = 131,
 			type = "header",
 			name = "Addon integration",
 		},
-		description112 = {
-			order = 112,
+		description132 = {
+			order = 132,
 			type = "description",
 			name = "\"|cffe6cc80Aye.warnings|r\" addon is intergated with some other similiar addons.\n"
 				.. "Aye sends, receives and honores addon messages informing about warnings handled.\n"
@@ -571,35 +579,87 @@ Aye.options.args.Warnings = {
 			,
 		},
 		EnableIntegrationExRT = {
-			order = 113,
+			order = 133,
 			name = "ExRT integration",
 			desc = "Enable Exorsus Raid Tools addon messages integration",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.EnableIntegrationExRT end,
 			set = function(_, v) Aye.db.global.Warnings.EnableIntegrationExRT = v end,
-			disabled = function() return (
+			disabled = function() return
 					not Aye.db.global.Warnings.enable
 				or	(
 							not Aye.db.global.Warnings.enableReadyCheck
 						and	not Aye.db.global.Warnings.enablePull
 					)
-			)
 			end,
 		},
 		EnableIntegrationRSC = {
-			order = 114,
+			order = 134,
 			name = "RSC integration",
 			desc = "Enable Raid Slack Check addon messages integration",
 			type = "toggle",
 			get = function() return Aye.db.global.Warnings.EnableIntegrationRSC end,
 			set = function(_, v) Aye.db.global.Warnings.EnableIntegrationRSC = v end,
-			disabled = function() return (
+			disabled = function() return
 					not Aye.db.global.Warnings.enable
 				or	(
 							not Aye.db.global.Warnings.enableReadyCheck
 						and	not Aye.db.global.Warnings.enablePull
 					)
-			)
+			end,
+		},
+		header151 = {
+			order = 151,
+			type = "header",
+			name = "Antispam",
+		},
+		description152 = {
+			order = 152,
+			type = "description",
+			name = "Prevent reporting same warning subjects multiple times within small amount of time.\n\n"
+				.. "Once warning subjects are determined on chosen events |cff9d9d9d(like Ready Check or Pull Timer)|r, it is required to pass some time before reporting it, "
+				.. "waiting for eventual addon messages from other members saying that they reported certain subjects already, so we will refrain from repeating same subject reports.\n\n"
+				.. "|cffe6cc80Warnings Report Delay|r value should be slightly higher than the highest ping of any group member on any time during reports |cff9d9d9d(if unsure, |cffe6cc801000|rms is usually an optimal value)|r.\n"
+			,
+		},
+		antispamCooldown = {
+			order = 154,
+			name = "Antispam Cooldown |cff9d9d9d(in s)|r",
+			desc = "Minimum amount of time |cff9d9d9d(in seconds)|r that must pass before reporting again same subject.",
+			type = "range",
+			min = 0,
+			max = 60,
+			softMin = 5,
+			softMax = 30,
+			bigStep = 5,
+			get = function() return Aye.db.global.Warnings.antispamCooldown end,
+			set = function(_, v) Aye.db.global.Warnings.antispamCooldown = v end,
+			disabled = function() return
+					not Aye.db.global.Warnings.enable
+				or	(
+							not Aye.db.global.Warnings.enableReadyCheck
+						and	not Aye.db.global.Warnings.enablePull
+					)
+			end,
+		},
+		antispamReportDelay = {
+			order = 155,
+			name = "Warnings Report Delay |cff9d9d9d(in ms)|r",
+			desc = "Warnings Report Delay by specified amount of time |cff9d9d9d(in milliseconds)|r.\n\n",
+			type = "range",
+			min = 0,
+			max = 5000,
+			softMin = 0,
+			softMax = 3000,
+			bigStep = 200,
+			get = function() return Aye.db.global.Warnings.antispamReportDelay end,
+			set = function(_, v) Aye.db.global.Warnings.antispamReportDelay = v end,
+			disabled = function() return
+					not Aye.db.global.Warnings.enable
+				or	(
+							not Aye.db.global.Warnings.enableReadyCheck
+						and	not Aye.db.global.Warnings.enablePull
+					)
 			end,
 		},
 	},

@@ -28,16 +28,14 @@ Aye.modules.Warnings.events.READY_CHECK = function(...)
 			Aye.db.global.Warnings.enable
 		and	Aye.db.global.Warnings.enableReadyCheck
 	then
-		Aye.modules.Warnings.timer:Cancel();
-		Aye.modules.Warnings.timer = C_Timer.NewTimer(1, function()
-			Aye.modules.Warnings.warn();
-		end);
+		if Aye.modules.Warnings.timer then Aye.modules.Warnings.timer:Cancel() end;
+		Aye.modules.Warnings.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamReportDelay /1000, Aye.modules.Warnings.warn);
 	end;
 end;
 
 Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 	local prefix, message, _, sender = ...;
-	sender = sender:match("^([^%-]+)-");
+	sender = sender:match("^([^%-]+)-") or sender;
 	
 	-- Aye Warnings broadcast handle
 	--
@@ -65,15 +63,14 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 	-->	-- ignore flask (reported by some other user by Aye.Warnings already)
 	if
 			prefix == "Aye"
-		and	message ~= nil
-		and not UnitIsUnit(sender, "player")
+		and	message
 	then
 		local subject = message:match("^Warnings%.(.+)");
 		
 		if subject == "Offline" then
 			Aye.modules.Warnings.antispam.Offline.cooldown = true;
-			Aye.modules.Warnings.antispam.Offline.timer:Cancel();
-			Aye.modules.Warnings.antispam.Offline.timer = C_Timer.NewTimer(10, function()
+			if Aye.modules.Warnings.antispam.Offline.timer then Aye.modules.Warnings.antispam.Offline.timer:Cancel() end;
+			Aye.modules.Warnings.antispam.Offline.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
 				Aye.modules.Warnings.antispam.Offline.cooldown = false;
 			end);
 		end;
@@ -81,23 +78,23 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 		if subject == "AFK" then
 			Aye.modules.Warnings.antispam.AFK.cooldown = true;
 			if Aye.modules.Warnings.antispam.AFK.timer then Aye.modules.Warnings.antispam.AFK.timer:Cancel() end;
-			Aye.modules.Warnings.antispam.AFK.timer = C_Timer.NewTimer(10, function()
+			Aye.modules.Warnings.antispam.AFK.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
 				Aye.modules.Warnings.antispam.AFK.cooldown = false;
 			end);
 		end;
 		
 		if subject == "Dead" then
 			Aye.modules.Warnings.antispam.Dead.cooldown = true;
-			Aye.modules.Warnings.antispam.Dead.timer:Cancel();
-			Aye.modules.Warnings.antispam.Dead.timer = C_Timer.NewTimer(10, function()
+			if Aye.modules.Warnings.antispam.Dead.timer then Aye.modules.Warnings.antispam.Dead.timer:Cancel() end;
+			Aye.modules.Warnings.antispam.Dead.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
 				Aye.modules.Warnings.antispam.Dead.cooldown = false;
 			end);
 		end;
 		
 		if subject == "FarAway" then
 			Aye.modules.Warnings.antispam.FarAway.cooldown = true;
-			Aye.modules.Warnings.antispam.FarAway.timer:Cancel();
-			Aye.modules.Warnings.antispam.FarAway.timer = C_Timer.NewTimer(10, function()
+			if Aye.modules.Warnings.antispam.FarAway.timer then Aye.modules.Warnings.antispam.FarAway.timer:Cancel() end;
+			Aye.modules.Warnings.antispam.FarAway.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
 				Aye.modules.Warnings.antispam.FarAway.cooldown = false;
 			end);
 		end;
@@ -105,31 +102,31 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 		if subject == "Sick" then
 			Aye.modules.Warnings.antispam.Sick.cooldown = true;
 			if Aye.modules.Warnings.antispam.Sick.timer then Aye.modules.Warnings.antispam.Sick.timer:Cancel() end;
-			Aye.modules.Warnings.antispam.Sick.timer = C_Timer.NewTimer(10, function()
+			Aye.modules.Warnings.antispam.Sick.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
 				Aye.modules.Warnings.antispam.Sick.cooldown = false;
 			end);
 		end;
 		
 		if subject == "Flask" then
 			Aye.modules.Warnings.antispam.Flask.cooldown = true;
-			Aye.modules.Warnings.antispam.Flask.timer:Cancel();
-			Aye.modules.Warnings.antispam.Flask.timer = C_Timer.NewTimer(10, function()
+			if Aye.modules.Warnings.antispam.Flask.timer then Aye.modules.Warnings.antispam.Flask.timer:Cancel() end;
+			Aye.modules.Warnings.antispam.Flask.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
 				Aye.modules.Warnings.antispam.Flask.cooldown = false;
 			end);
 		end;
 		
 		if subject == "Rune" then
 			Aye.modules.Warnings.antispam.Rune.cooldown = true;
-			Aye.modules.Warnings.antispam.Rune.timer:Cancel();
-			Aye.modules.Warnings.antispam.Rune.timer = C_Timer.NewTimer(10, function()
+			if Aye.modules.Warnings.antispam.Rune.timer then Aye.modules.Warnings.antispam.Rune.timer:Cancel() end;
+			Aye.modules.Warnings.antispam.Rune.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
 				Aye.modules.Warnings.antispam.Rune.cooldown = false;
 			end);
 		end;
 		
 		if subject == "WellFed" then
 			Aye.modules.Warnings.antispam.WellFed.cooldown = true;
-			Aye.modules.Warnings.antispam.WellFed.timer:Cancel();
-			Aye.modules.Warnings.antispam.WellFed.timer = C_Timer.NewTimer(10, function()
+			if Aye.modules.Warnings.antispam.WellFed.timer then Aye.modules.Warnings.antispam.WellFed.timer:Cancel() end;
+			Aye.modules.Warnings.antispam.WellFed.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
 				Aye.modules.Warnings.antispam.WellFed.cooldown = false;
 			end);
 		end;
@@ -138,15 +135,16 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 	-- DBM Pull Time broadcast handle
 	if
 			prefix == "D4"
-		and	message ~= nil
+		and	message
+		and sender
 		and	(
-					UnitIsGroupLeader(sender)
-				or	UnitIsGroupAssistant(sender)
+					UnitIsGroupLeader(sender, IsInInstance() and LE_PARTY_CATEGORY_INSTANCE or LE_PARTY_CATEGORY_HOME)
+				or	UnitIsGroupAssistant(sender, IsInInstance() and LE_PARTY_CATEGORY_INSTANCE or LE_PARTY_CATEGORY_HOME)
 				or	UnitIsUnit(sender, "player")
 			)
 	then
 		local seconds = message:match("^PT\t(%d+)");
-		if seconds ~= nil then
+		if seconds then
 			seconds = tonumber(seconds);
 			if seconds >0 then
 				-- DBM Pull
@@ -154,10 +152,8 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 						Aye.db.global.Warnings.enable
 					and	Aye.db.global.Warnings.enablePull
 				then
-					Aye.modules.Warnings.timer:Cancel();
-					Aye.modules.Warnings.timer = C_Timer.NewTimer(1, function()
-						Aye.modules.Warnings.warn();
-					end);
+					if Aye.modules.Warnings.timer then Aye.modules.Warnings.timer:Cancel() end;
+					Aye.modules.Warnings.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamReportDelay /1000, Aye.modules.Warnings.warn);
 				end;
 			end;
 		end;
@@ -166,29 +162,29 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 	-- ExRT raidcheck broadcast handle
 	if
 			prefix == "raidcheck"
-		and	message ~= nil
+		and	message
 		and	Aye.db.global.Warnings.EnableIntegrationExRT
 	then
 		if message == "FOOD" then
 			Aye.modules.Warnings.antispam.WellFed.cooldown = true;
-			Aye.modules.Warnings.antispam.WellFed.timer:Cancel();
-			Aye.modules.Warnings.antispam.WellFed.timer = C_Timer.NewTimer(10, function()
+			if Aye.modules.Warnings.antispam.WellFed.timer then Aye.modules.Warnings.antispam.WellFed.timer:Cancel() end;
+			Aye.modules.Warnings.antispam.WellFed.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
 				Aye.modules.Warnings.antispam.WellFed.cooldown = false;
 			end);
 		end;
 		
 		if message == "FLASK" then
 			Aye.modules.Warnings.antispam.Flask.cooldown = true;
-			Aye.modules.Warnings.antispam.Flask.timer:Cancel();
-			Aye.modules.Warnings.antispam.Flask.timer = C_Timer.NewTimer(10, function()
+			if Aye.modules.Warnings.antispam.Flask.timer then Aye.modules.Warnings.antispam.Flask.timer:Cancel() end;
+			Aye.modules.Warnings.antispam.Flask.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
 				Aye.modules.Warnings.antispam.Flask.cooldown = false;
 			end);
 		end;
 		
 		if message == "RUNES" then
 			Aye.modules.Warnings.antispam.Rune.cooldown = true;
-			Aye.modules.Warnings.antispam.Rune.timer:Cancel();
-			Aye.modules.Warnings.antispam.Rune.timer = C_Timer.NewTimer(10, function()
+			if Aye.modules.Warnings.antispam.Rune.timer then Aye.modules.Warnings.antispam.Rune.timer:Cancel() end;
+			Aye.modules.Warnings.antispam.Rune.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
 				Aye.modules.Warnings.antispam.Rune.cooldown = false;
 			end);
 		end;
@@ -197,25 +193,25 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 	-- RSC raidcheck broadcast handle
 	if
 			prefix == "RSCaddon"
-		and	message ~= nil
+		and	message
 		and	message == "a50"
 		and	Aye.db.global.Warnings.EnableIntegrationRSC
 	then
 		Aye.modules.Warnings.antispam.WellFed.cooldown = true;
-		Aye.modules.Warnings.antispam.WellFed.timer:Cancel();
-		Aye.modules.Warnings.antispam.WellFed.timer = C_Timer.NewTimer(10, function()
+		if Aye.modules.Warnings.antispam.WellFed.timer then Aye.modules.Warnings.antispam.WellFed.timer:Cancel() end;
+		Aye.modules.Warnings.antispam.WellFed.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
 			Aye.modules.Warnings.antispam.WellFed.cooldown = false;
 		end);
 		
 		Aye.modules.Warnings.antispam.Flask.cooldown = true;
-		Aye.modules.Warnings.antispam.Flask.timer:Cancel();
-		Aye.modules.Warnings.antispam.Flask.timer = C_Timer.NewTimer(10, function()
+		if Aye.modules.Warnings.antispam.Flask.timer then Aye.modules.Warnings.antispam.Flask.timer:Cancel() end;
+		Aye.modules.Warnings.antispam.Flask.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
 			Aye.modules.Warnings.antispam.Flask.cooldown = false;
 		end);
 		
 		Aye.modules.Warnings.antispam.Rune.cooldown = true;
-		Aye.modules.Warnings.antispam.Rune.timer:Cancel();
-		Aye.modules.Warnings.antispam.Rune.timer = C_Timer.NewTimer(10, function()
+		if Aye.modules.Warnings.antispam.Rune.timer then Aye.modules.Warnings.antispam.Rune.timer:Cancel() end;
+		Aye.modules.Warnings.antispam.Rune.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
 			Aye.modules.Warnings.antispam.Rune.cooldown = false;
 		end);
 	end;
@@ -231,7 +227,7 @@ Aye.modules.Warnings.slash = function()
 	Aye.modules.Warnings.antispam.Rune.cooldown = false;
 	Aye.modules.Warnings.antispam.WellFed.cooldown = false;
 	
-	Aye.modules.Warnings.timer:Cancel();
+	if Aye.modules.Warnings.timer then Aye.modules.Warnings.timer:Cancel() end;
 	Aye.modules.Warnings.warn();
 end;
 
@@ -240,7 +236,57 @@ end;
 -- @noparam
 -- @noreturn
 Aye.modules.Warnings.warn = function()
-	local members = max(1, GetNumGroupMembers());
+	-- Check if reporting is enabled
+	if not Aye.db.global.Warnings.enable then return end;
+	
+	-- Check reporting conditions
+	if (
+			-- Disable
+			(
+					(
+							Aye.db.global.Warnings.GuildGroupDisable
+						and	Aye.utils.Player.InAllyGroup()
+					)
+				or	(
+							Aye.db.global.Warnings.LFGDisable
+						and	IsPartyLFG()
+					)
+				or	(
+							Aye.db.global.Warnings.PvPDisable
+						and	Aye.utils.Player.IsOnPvP()
+					)
+				or	(
+							Aye.db.global.Warnings.OutsideInstanceDisable
+						and	not IsInInstance()
+					)
+			)
+			-- Force enable
+		and	not (
+					(
+							Aye.db.global.Warnings.GuildGroupForceEnable
+						and	Aye.utils.Player.InAllyGroup()
+					)
+				or	(
+							Aye.db.global.Warnings.LFGForceEnable
+						and	IsPartyLFG()
+					)
+				or	(
+							Aye.db.global.Warnings.PvPForceEnable
+						and	Aye.utils.Player.IsOnPvP()
+					)
+				or	(
+							Aye.db.global.Warnings.OutsideInstanceForceEnable
+						and	not IsInInstance()
+					)
+			)
+	) then return end;
+	
+	-- Force Disable if Mythic Benched
+	if
+			Aye.db.global.Warnings.ForceDisableIfMythicBenched
+		and	Aye.utils.Player.IsMythicBenched()
+	then return end;
+	
 	
 	-- table of subjects to check
 	-- every subject contains:
@@ -260,6 +306,9 @@ Aye.modules.Warnings.warn = function()
 		Rune	= {t = {}, name = "No Rune"},
 		WellFed	= {t = {}, name = "Not Well Fed"},
 	};
+	
+	-- group members
+	local members = max(1, GetNumGroupMembers());
 	
 	-- check subjects
 	for i = 1, members do
@@ -413,56 +462,9 @@ Aye.modules.Warnings.warn = function()
 		end;
 	end;
 	
-	-- Force Disable if Mythic Benched
-	if
-			Aye.db.global.Warnings.ForceDisableIfMythicBenched
-		and	Aye.utils.Player.IsMythicBenched()
-	then return end;
-	
-	if (
-			-- Force enable
-			(
-					(
-							Aye.db.global.Warnings.GuildGroupForceEnable
-						and	Aye.utils.Player.InAllyGroup()
-					)
-				or	(
-							Aye.db.global.Warnings.LFGForceEnable
-						and	IsPartyLFG()
-					)
-				or	(
-							Aye.db.global.Warnings.PvPForceEnable
-						and	Aye.utils.Player.IsOnPvP()
-					)
-				or	(
-							Aye.db.global.Warnings.OutsideInstanceForceEnable
-						and	not IsInInstance()
-					)
-			)
-			-- Disable
-		or	not (
-					(
-							Aye.db.global.Warnings.GuildGroupDisable
-						and	Aye.utils.Player.InAllyGroup()
-					)
-				or	(
-							Aye.db.global.Warnings.LFGDisable
-						and	IsPartyLFG()
-					)
-				or	(
-							Aye.db.global.Warnings.PvPDisable
-						and	Aye.utils.Player.IsOnPvP()
-					)
-				or	(
-							Aye.db.global.Warnings.OutsideInstanceDisable
-						and	not IsInInstance()
-					)
-			)
-	) then
-		-- report subjects
-		for k, v in pairs(t) do
-			if Aye.db.global.Warnings[k] and #v.t >0 then Aye.modules.Warnings.report(v.t, v.name) end;
-		end;
+	-- report subjects
+	for k, v in pairs(t) do
+		if Aye.db.global.Warnings[k] and #v.t >0 then Aye.modules.Warnings.report(v.t, v.name) end;
 	end;
 end;
 
@@ -488,29 +490,22 @@ end;
 -- @example output
 --> WARNING! No BiS Rune (3): Foo, Bar (5), Baz
 Aye.modules.Warnings.report = function(t, subject)
-	local m = "";
-	for i, o in pairs(t) do
-		if m ~= "" then
-			m = m ..", ";
+	-- message to report
+	local message = "";
+	
+	for _, o in pairs(t) do
+		if message ~= "" then
+			message = message ..", ";
 		end;
 		
-		m = m ..o.name;
+		message = message ..o.name;
 		if type(o.note) == "number" or type(o.note) == "string" then
-			m = m .." (" ..o.note ..")";
+			message = message .." (" ..o.note ..")";
 		end;
 	end;
 	
-	local preM = "";
-	if Aye.db.global.Warnings.reportWithAyePrefix then
-		preM = preM .."[Aye] ";
-	end;
-	if Aye.db.global.Warnings.reportWithWarningPrefix then
-		preM = preM ..GetSpellLink(176781) .." "; -- "WARNING!" spell
-	end;
-	
-	m = preM ..subject .." (" ..#t .."): " ..m;
-	
-	if
+	-- if message should be printed instead of sent
+	local bPrint = (
 			Aye.db.global.Warnings.channel == "Print"
 		or	(
 					(
@@ -530,16 +525,30 @@ Aye.modules.Warnings.report = function(t, subject)
 					Aye.db.global.Warnings.forcePrintInGuildGroup
 				and	Aye.utils.Player.InAllyGroup()
 			)
-	then
-		print(m);
+	);
+	
+	-- prefix of message
+	local prefix = "";
+	if Aye.db.global.Warnings.reportWithAyePrefix then
+		prefix = prefix ..(bPrint and "|cff9d9d9d[|r|cffe6cc80Aye|r|cff9d9d9d]|r " or "[Aye] ");
+	end;
+	if Aye.db.global.Warnings.reportWithWarningPrefix then
+		-- "WARNING!" spell
+		prefix = prefix ..GetSpellLink(176781) .." ";
+	end;
+	
+	message = prefix ..subject .." (" ..#t .."): " ..message;
+	
+	if bPrint then
+		print(message);
 	elseif Aye.db.global.Warnings.channel == "Dynamic" then
-		Aye.utils.Chat.SendChatMessage(m);
+		Aye.utils.Chat.SendChatMessage(message);
 	elseif Aye.db.global.Warnings.channel == "RW" then
-		SendChatMessage(m, Aye.utils.Chat.GetGroupChannel(true));
+		SendChatMessage(message, Aye.utils.Chat.GetGroupChannel(true));
 	elseif Aye.db.global.Warnings.channel == "Raid" then
-		SendChatMessage(m, Aye.utils.Chat.GetGroupChannel(false));
+		SendChatMessage(message, Aye.utils.Chat.GetGroupChannel(false));
 	else
-		SendChatMessage(m, Aye.db.global.Warnings.channel);
+		SendChatMessage(message, Aye.db.global.Warnings.channel);
 	end;
 	
 	if

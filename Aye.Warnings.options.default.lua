@@ -32,4 +32,6 @@ Aye.default.global.Warnings = {
 	reportWithWarningPrefix = true,		-- Add inline "[WARNING!] " prefix before report
 	EnableIntegrationExRT = true,		-- Enable Exorsus Raid Tools addon messages integration
 	EnableIntegrationRSC = true,		-- Enable Raid Slack Check addon messages integration
+	antispamCooldown = 10,				-- Antispam Cooldown (in s)
+	antispamReportDelay = 1000,			-- Ansitpam Report Delay (in ms)
 };
