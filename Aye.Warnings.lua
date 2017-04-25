@@ -366,9 +366,8 @@ Aye.modules.Warnings.warn = function()
 		
 		if UnitIsVisible(unitID) then -- credits for checking function to: Vlad#WoWUIDev and nebula#WoWUIDev
 			if
-					Aye.db.global.Warnings.ResurrectionSickness
+					Aye.db.global.Warnings.Sick
 				and	not Aye.modules.Warnings.antispam.Sick.cooldown
-				and	not	UnitAura(unitID, "Resurrection Sickness")
 			then
 				local _, _, _, _, _, _, expires = UnitDebuff(unitID, GetSpellInfo(15007));
 				if type(expires) =="number" and expires >0 then

@@ -151,13 +151,13 @@ Aye.options.args.Warnings = {
 					)
 			end,
 		},
-		ResurrectionSickness = {
+		Sick = {
 			order = 39,
 			name = "|cffe6cc80Report|r players with " ..GetSpellLink(15007) .." debuff",
 			type = "toggle",
 			width = "full",
-			get = function() return Aye.db.global.Warnings.ResurrectionSickness end,
-			set = function(_, v) Aye.db.global.Warnings.ResurrectionSickness = v end,
+			get = function() return Aye.db.global.Warnings.Sick end,
+			set = function(_, v) Aye.db.global.Warnings.Sick = v end,
 			disabled = function() return
 					not Aye.db.global.Warnings.enable
 				or	(
