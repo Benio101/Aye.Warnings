@@ -453,15 +453,6 @@ Aye.modules.Warnings.warn = function()
 		t.FarAway.t = {{["name"] = UnitName("player")}};
 	end;
 	
-	-- remove group subject entries with no issues
-	for k0, v0 in pairs(t) do
-		for k = #v0.t, 1, -1 do
-			if v0.t[k].buff ~= nil and #v0.t[k].t ==0 then
-				table.remove(t[k0].t, k);
-			end;
-		end;
-	end;
-	
 	-- report subjects
 	for k, v in pairs(t) do
 		if Aye.db.global.Warnings[k] and #v.t >0 then Aye.modules.Warnings.report(v.t, v.name) end;
