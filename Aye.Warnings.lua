@@ -5,7 +5,7 @@ Aye.modules.Warnings.OnEnable = function()
 	-- register addon prefixes
 	RegisterAddonMessagePrefix("Aye");			-- Aye
 	RegisterAddonMessagePrefix("D4");			-- DBM
-	RegisterAddonMessagePrefix("raidcheck");	-- ExRT
+	RegisterAddonMessagePrefix("EXRTADD");		-- ExRT
 	RegisterAddonMessagePrefix("RSCaddon");		-- RSC
 	
 	-- list of subjects that won't be checked
@@ -66,6 +66,7 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 		and	message
 	then
 		local subject = message:match("^Warnings%.(.+)");
+		if not subject then return end;
 		
 		if subject == "Offline" then
 			Aye.modules.Warnings.antispam.Offline.cooldown = true;
@@ -144,28 +145,31 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 			)
 	then
 		local seconds = message:match("^PT\t(%d+)");
-		if seconds then
-			seconds = tonumber(seconds);
-			if seconds >0 then
-				-- DBM Pull
-				if
-						Aye.db.global.Warnings.enable
-					and	Aye.db.global.Warnings.enablePull
-				then
-					if Aye.modules.Warnings.timer then Aye.modules.Warnings.timer:Cancel() end;
-					Aye.modules.Warnings.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamReportDelay /1000, Aye.modules.Warnings.warn);
-				end;
+		if not seconds then return end;
+		seconds = tonumber(seconds);
+		
+		if seconds >0 then
+			-- DBM Pull
+			if
+					Aye.db.global.Warnings.enable
+				and	Aye.db.global.Warnings.enablePull
+			then
+				if Aye.modules.Warnings.timer then Aye.modules.Warnings.timer:Cancel() end;
+				Aye.modules.Warnings.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamReportDelay /1000, Aye.modules.Warnings.warn);
 			end;
 		end;
 	end;
 	
 	-- ExRT raidcheck broadcast handle
 	if
-			prefix == "raidcheck"
+			prefix == "EXRTADD"
 		and	message
 		and	Aye.db.global.Warnings.EnableIntegrationExRT
 	then
-		if message == "FOOD" then
+		local subject = message:match("^raidcheck\t(.+)");
+		if not subject then return end;
+		
+		if subject == "FOOD" then
 			Aye.modules.Warnings.antispam.WellFed.cooldown = true;
 			if Aye.modules.Warnings.antispam.WellFed.timer then Aye.modules.Warnings.antispam.WellFed.timer:Cancel() end;
 			Aye.modules.Warnings.antispam.WellFed.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
@@ -173,7 +177,7 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 			end);
 		end;
 		
-		if message == "FLASK" then
+		if subject == "FLASK" then
 			Aye.modules.Warnings.antispam.Flask.cooldown = true;
 			if Aye.modules.Warnings.antispam.Flask.timer then Aye.modules.Warnings.antispam.Flask.timer:Cancel() end;
 			Aye.modules.Warnings.antispam.Flask.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
@@ -181,7 +185,7 @@ Aye.modules.Warnings.events.CHAT_MSG_ADDON = function(...)
 			end);
 		end;
 		
-		if message == "RUNES" then
+		if subject == "RUNES" then
 			Aye.modules.Warnings.antispam.Rune.cooldown = true;
 			if Aye.modules.Warnings.antispam.Rune.timer then Aye.modules.Warnings.antispam.Rune.timer:Cancel() end;
 			Aye.modules.Warnings.antispam.Rune.timer = C_Timer.NewTimer(Aye.db.global.Warnings.antispamCooldown, function()
