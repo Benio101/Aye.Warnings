@@ -1,5 +1,5 @@
 local Aye = Aye;
-if not LibStub:NewLibrary("Aye.utils.Buffs", 2) then return end;
+if not LibStub:NewLibrary("Aye.utils.Buffs", 3) then return end;
 Aye.utils.Buffs = Aye.utils.Buffs or {};
 
 -- Check if @unitID has rune
@@ -122,11 +122,6 @@ end;
 Aye.utils.Buffs.UnitIsWellFed = function(unitID, requiredTier)
 	requiredTier = requiredTier == nil and 3 or requiredTier;
 	
-	-- expires	= time at which the aura will expire
-	-- spellID	= spellID of the aura, used to identify Well Fed buff
-	-- value2	= how much stat is applied on buff, ex. 125 for +125 mastery
-	local _, _, _, _, _, _, expires, _, _, _, spellID, _, _, _, value2 = UnitBuff(unitID, "Well Fed");
-	
 	-- Well Fed
 	for _, buffID in pairs({
 		201640, -- 500 int
@@ -134,7 +129,9 @@ Aye.utils.Buffs.UnitIsWellFed = function(unitID, requiredTier)
 		201638, -- 500 str
 		201641, -- 750 sta
 	}) do
-		if type(spellID) =="number" and buffID == spellID then
+		local _, _, _, _, _, _, expires = UnitBuff(unitID, GetSpellInfo(buffID));
+		
+		if type(expires) =="number" and expires >0 then
 			return 1, floor(.5+ (expires -GetTime()) /60);
 		end;
 	end;
@@ -146,7 +143,9 @@ Aye.utils.Buffs.UnitIsWellFed = function(unitID, requiredTier)
 		201634, -- 400 str
 		201637, -- 600 sta
 	}) do
-		if type(spellID) =="number" and buffID == spellID then
+		local _, _, _, _, _, _, expires = UnitBuff(unitID, GetSpellInfo(buffID));
+		
+		if type(expires) =="number" and expires >0 then
 			if requiredTier <=4 then
 				return 1, floor(.5+ (expires -GetTime()) /60);
 			else
@@ -163,7 +162,9 @@ Aye.utils.Buffs.UnitIsWellFed = function(unitID, requiredTier)
 		225605, -- 375 versatility
 		225606, -- 2831.(6) +haste dps
 	}) do
-		if type(spellID) =="number" and buffID == spellID then
+		local _, _, _, _, _, _, expires = UnitBuff(unitID, GetSpellInfo(buffID));
+		
+		if type(expires) =="number" and expires >0 then
 			if requiredTier <=3 then
 				return 1, floor(.5+ (expires -GetTime()) /60);
 			else
@@ -180,7 +181,9 @@ Aye.utils.Buffs.UnitIsWellFed = function(unitID, requiredTier)
 		225600, -- 300 versatility
 		225601, -- 2265.(3) +haste dps
 	}) do
-		if type(spellID) =="number" and buffID == spellID then
+		local _, _, _, _, _, _, expires = UnitBuff(unitID, GetSpellInfo(buffID));
+		
+		if type(expires) =="number" and expires >0 then
 			if requiredTier <=2 then
 				return 1, floor(.5+ (expires -GetTime()) /60);
 			else
@@ -197,7 +200,9 @@ Aye.utils.Buffs.UnitIsWellFed = function(unitID, requiredTier)
 		201333, -- 225 versatility
 		201336, -- 1699 +haste dps
 	}) do
-		if type(spellID) =="number" and buffID == spellID then
+		local _, _, _, _, _, _, expires = UnitBuff(unitID, GetSpellInfo(buffID));
+		
+		if type(expires) =="number" and expires >0 then
 			if requiredTier <=1 then
 				return 1, floor(.5+ (expires -GetTime()) /60);
 			else
@@ -210,13 +215,49 @@ Aye.utils.Buffs.UnitIsWellFed = function(unitID, requiredTier)
 	local _, _, _, _, _, _, eating = UnitBuff(unitID, GetSpellInfo(433)); -- eating
 	if type(eating) =="number" and eating >0 then
 		return 3, "E";
-	end
+	end;
 	
 	-- Food & Drink
 	local _, _, _, _, _, _, eating = UnitBuff(unitID, GetSpellInfo(192002)); -- Food & Drink
 	if type(eating) =="number" and eating >0 then
 		return 3, "E";
-	end
+	end;
+	
+	-- get localized "Well Fed" buff name
+	-- @todo move it, or rewrite a bit
+	local langs = {
+		deDE = "de",
+		enGB = "en",
+		enUS = "en",
+		esES = "es",
+		esMX = "es",
+		frFR = "fr",
+		itIT = "it",
+		koKR = "ko",
+		ptBR = "pt",
+		ruRU = "ru",
+		zhCN = "cn",
+		zhTW = "cn",
+	};
+	local lang = langs[GetLocale()];
+	if not lang then lang = "en" end;
+	local L_WellFed = {
+		de = "Satt",
+		en = "Well Fed",
+		es = "Bien alimentado",
+		fr = "Bien nourri",
+		it = "Ben Nutrito",
+		ko = "포만감",
+		pt = "Bem Alimentado",
+		ru = "Сытость",
+		cn = "进食充分",
+	};
+	local WellFed = L_WellFed[lang];
+	
+	-- expires	= time at which the aura will expire
+	-- spellID	= spellID of the aura, used to identify Well Fed buff
+	-- value2	= how much stat is applied on buff, ex. 125 for +125 mastery
+	local _, _, _, _, _, _, expires, _, _, _, spellID, _, _, _, value2 = UnitBuff(unitID, WellFed);
 	
 	-- Poor Fed
 	if type(expires) =="number" and expires >0 and type(value2) =="number" and value2 >=0 then
