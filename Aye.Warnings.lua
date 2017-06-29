@@ -285,10 +285,10 @@ Aye.modules.Warnings.warn = function()
 			)
 	) then return end;
 	
-	-- Force Disable if Mythic Benched
+	-- Force Disable if Benched
 	if
-			Aye.db.global.Warnings.ForceDisableIfMythicBenched
-		and	Aye.utils.Player.IsMythicBenched()
+			Aye.db.global.Warnings.ForceDisableIfBenched
+		and	Aye.utils.Player.IsBenched()
 	then return end;
 	
 	
@@ -314,6 +314,15 @@ Aye.modules.Warnings.warn = function()
 	-- group members
 	local members = max(1, GetNumGroupMembers());
 	
+	-- groups per raid difficulty
+	local groups = false;
+	local difficulty = GetRaidDifficultyID();
+	if difficulty == DIFFICULTY_PRIMARYRAID_MYTHIC then groups = 4 end;
+	if
+			difficulty == DIFFICULTY_PRIMARYRAID_HEROIC
+		or	difficulty == DIFFICULTY_PRIMARYRAID_NORMAL
+	then groups = 6 end;
+	
 	-- check subjects
 	for i = 1, members do
 		-- in raid, every player have "raidX" id where id begins from 1 and ends with member number
@@ -324,13 +333,13 @@ Aye.modules.Warnings.warn = function()
 		
 		-- ignore benched players
 		if
-				Aye.db.global.Warnings.IgnoreMythicBenched
+				Aye.db.global.Warnings.IgnoreBenched
 			and	UnitInRaid(unitID)
 			and	not IsPartyLFG()
-			and	GetRaidDifficultyID() == DIFFICULTY_PRIMARYRAID_MYTHIC
+			and	groups ~= false
 		then
 			local _, _, pid = GetRaidRosterInfo(i);
-			if pid >4 then return end;
+			if pid >groups then return end;
 		end;
 		
 		if name then

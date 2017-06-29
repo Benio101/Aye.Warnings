@@ -72,16 +72,17 @@ Aye.options.args.Warnings = {
 			set = function(_, v) Aye.db.global.Warnings.enablePull = v end,
 			disabled = function() return not Aye.db.global.Warnings.enable end,
 		},
-		IgnoreMythicBenched = {
+		IgnoreBenched = {
 			order = 19,
-			name = "|cffe6cc80Ignore|r Mythic Benched players |cff9d9d9d(players in Ally Group outside party #1–4)|r",
-			desc = "|cffe6cc80Ignore|r players in Ally Group |cff9d9d9d(at least half of other members are either friends or guildmates)|r on Mythic difficulty that are outside party #1–4.\n\n"
+			name = "|cffe6cc80Ignore|r Benched players |cff9d9d9d(players in Ally Group outside party #1–4/6)|r",
+			desc = "|cffe6cc80Ignore|r players in Ally Group |cff9d9d9d(at least half of other members are either friends or guildmates)|r that are outside party"
+				.. " #1–4 |cff9d9d9d(on Mythic difficulty)|r or #1–6 |cff9d9d9d(on Normal/Heroic difficulty)|r.\n\n"
 				.. "|cffe6cc80Ignore|r|cff9d9d9d causes benched players not to be reported at all.|r"
 			,
 			type = "toggle",
 			width = "full",
-			get = function() return Aye.db.global.Warnings.IgnoreMythicBenched end,
-			set = function(_, v) Aye.db.global.Warnings.IgnoreMythicBenched = v end,
+			get = function() return Aye.db.global.Warnings.IgnoreBenched end,
+			set = function(_, v) Aye.db.global.Warnings.IgnoreBenched = v end,
 			disabled = function() return
 					not Aye.db.global.Warnings.enable
 				or	(
@@ -462,14 +463,16 @@ Aye.options.args.Warnings = {
 			type = "description",
 			name = "|cffe6cc80Force Disable|r is most important and overwrites even |cffe6cc80Force Enable|r.\n",
 		},
-		ForceDisableIfMythicBenched = {
+		ForceDisableIfBenched = {
 			order = 93,
-			name = "|cffe6cc80Force Disable|r if Mythic Benched |cff9d9d9d(in Ally Group outside party #1–4)|r",
-			desc = "|cffe6cc80Force Disable|r in Ally Group |cff9d9d9d(at least half of other members are either friends or guildmates)|r on Mythic difficulty if outside party #1–4.\n\n",
+			name = "|cffe6cc80Force Disable|r if Benched |cff9d9d9d(in Ally Group outside party #1–4/6)|r",
+			desc = "|cffe6cc80Force Disable|r in Ally Group |cff9d9d9d(at least half of other members are either friends or guildmates)|r if outside party"
+				.. " #1–4 |cff9d9d9d(on Mythic difficulty)|r or #1–6 |cff9d9d9d(on Normal/Heroic difficulty)|r.\n\n"
+			,
 			type = "toggle",
 			width = "full",
-			get = function() return Aye.db.global.Warnings.ForceDisableIfMythicBenched end,
-			set = function(_, v) Aye.db.global.Warnings.ForceDisableIfMythicBenched = v end,
+			get = function() return Aye.db.global.Warnings.ForceDisableIfBenched end,
+			set = function(_, v) Aye.db.global.Warnings.ForceDisableIfBenched = v end,
 			disabled = function() return
 					not Aye.db.global.Warnings.enable
 				or	(
